@@ -6,6 +6,7 @@ import data from "../data/products.json";
 
 const Main = (props) => {
     console.log(props.data)
+    console.log(props.data)
 
     const [item,setItem] = useState(props.data);
     
