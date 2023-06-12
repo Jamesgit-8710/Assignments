@@ -13,7 +13,9 @@ function Search() {
   return (
     <>
         <input className='search' type="text" id="search" name="search" onChange={filtering}/>
+        <div className='products'>
         <Main data={item}/>
+        </div>
     </>
   )
 }
