@@ -1,0 +1,12 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+.prodLayout{
+    border: 2px solid black;
+    display: inline-block;
+    flex-direction: column;
+    text-align: center;
+    margin: 10px;
+}
