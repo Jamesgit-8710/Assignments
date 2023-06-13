@@ -1,7 +1,7 @@
 import React from 'react'
 import { Outlet, Link } from "react-router-dom";
 
-function Filters({delArr,comArr,}) {
+function Filters({delArr,comArr}) {
   
   return (
     <>

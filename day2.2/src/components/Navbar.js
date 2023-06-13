@@ -23,12 +23,13 @@ function Navbar() {
   const setDel = (e) => {
     setDelArr([...delArr,e])
     items.filter((item) => item!==e) 
-    console.log(delArr)
+    // console.log(e)
+    // console.log(items)
   }
 
   const setCom = (e) => {
     setComArr([...comArr,e])
-    console.log(comArr)
+    //console.log(comArr)
   }
 
   return (

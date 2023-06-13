@@ -1,7 +1,7 @@
 import React from 'react'
 import Item from './Item';
 
-function List({i,setDel,setCom,set}) {
+function List({i,setDel,setCom}) {
 
   // const [delArr, setDelArr] = useState([]);
   // const [comArr, setComArr] = useState([]);
