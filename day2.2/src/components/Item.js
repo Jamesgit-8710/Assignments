@@ -15,19 +15,19 @@ function Item({title,setDel,setCom}) {
   const deletedArr = () => {
     setDel(title)
     //set(title)
-    console.log(title)
+    //console.log(title)
   }
 
   const completedArr = () => {
     setCom(title)
-    console.log(title)
+    //console.log(title)
   }
 
   return (
-    <div>
-      <p className="todo">{title}</p>
-      <button className="todo" onClick={completedArr}>completed</button>
-      <button className="todo" onClick={deletedArr}>deleted</button>
+    <div className="todo">
+      <p className="title">{title}</p>
+      <button className="com" onClick={completedArr}>completed</button>
+      <button className="del" onClick={deletedArr}>deleted</button>
     </div>
   )
 }

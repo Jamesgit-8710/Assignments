@@ -1,46 +1,32 @@
-*{
-    margin: 0px;
-    padding: 0px;
-}
-
-.title{
-    display: inline-block;
-    color: rgb(9, 0, 40);
-    font-weight: 500;
-    font-size: 0.9rem;
-}
-
-.todo{
+.filters{
     padding: 5px;
-    background-color: white;
-    margin: 5px;
-    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
 }
 
-.del{
+.button{
     text-decoration: none;
     font-size: 0.8rem;
     height: 1.2rem;
-    width: 4rem;
+    width: 8rem;
     font-weight: 500;
     color: white!important;
     background-color: red;
     border: 0px;
     border-radius: 5px;
     margin-left: 0px;
-    float: right;
 }
 
-.com{
+.button2{
     text-decoration: none;
     font-size: 0.8rem;
     height: 1.2rem;
-    width: 4.5rem;
+    width: 8rem;
     font-weight: 500;
     color: white!important;
-    background-color: rgb(0, 200, 147);
+    background-color: rgb(0, 255, 187);
     border: 0px;
     border-radius: 5px;
-    margin-left: 5px;
-    float: right;
+    margin-left: 0px;
 }

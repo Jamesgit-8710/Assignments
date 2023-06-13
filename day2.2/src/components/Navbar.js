@@ -22,7 +22,8 @@ function Navbar() {
 
   const setDel = (e) => {
     setDelArr([...delArr,e])
-    items.filter((item) => item!==e) 
+    // items.filter((item) => item!==e) 
+    // items.filter((val)=> console.log(val,8888))
     // console.log(e)
     // console.log(items)
   }
@@ -34,12 +35,17 @@ function Navbar() {
 
   return (
     <>
-    <div>
-        <input className='input' placeholder='Write Here...' onChange={updateVal}></input>
-        <button onClick={update}>ADD</button>
+    <div className="outerBody">
+      <h2 className="heading">Todo List</h2>
+      <div className="innerBody">
+        <div className="nav">
+            <input className='input' placeholder='Write Here...' onChange={updateVal}></input>
+            <button onClick={update} className="btn">ADD</button>
+        </div>
+        <Filters delArr={delArr} comArr={comArr}/>
+        <List i={items} setDel={setDel} setCom={setCom} />
+      </div>
     </div>
-    <Filters delArr={delArr} comArr={comArr}/>
-    <List i={items} setDel={setDel} setCom={setCom} />
     </>
   )
 }
