@@ -5,7 +5,7 @@ import '../styles/navbar.css'
 function Navbar() {
   return (
     <div className='navbar'>
-        <h2 className='logo'>Zenmonk</h2>
+        <h2 className='logo'>Zenmonk store</h2>
         <Search/>
     </div>
   )

@@ -27,7 +27,7 @@ const Main = (props) => {
   return (
     <div>
       {filteredItems.map((e) => {
-        return <Product title={e.title} price={e.price} thumbnail={e.thumbnail}/>
+        return <Product title={e.title} price={e.price} img={e.thumbnail}/>
       })} 
     </div>
   );
