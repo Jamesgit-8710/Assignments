@@ -3,20 +3,16 @@ import Song from './Song'
 import '../styles/list.css'
 import obj from '../store/data'
 
-function List({setImg,setTitle,setIndex}) {
-    const setI = ((e)=>{
-        setImg(e)
-    })
-    const setT = ((e)=>{
-        setTitle(e)
-    })
+function List({set}) {
+   
     const setIn = ((e)=>{
-        setIndex(e)
+        set(e)
     })
+
   return (
     <div className='list'>
         {obj.map((e,index)=>{
-            return <Song imgUrl={e.imgurl} title={e.title} sr={e.src}  setImg={setI} setTitle={setT} setIndex={setIn} index={index}/>
+            return <Song imgUrl={e.imgurl} title={e.title} sr={e.src} setIndex={setIn} index={index}/>
         })}
     </div>
   )

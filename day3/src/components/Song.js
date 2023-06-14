@@ -1,21 +1,18 @@
 import React from 'react'
 import '../styles/song.css'
 
-function Song({imgUrl,title,sr,setImg,setTitle,setIndex,index}) {
-    const play = (()=>{
+function Song({imgUrl,title,sr,setIndex,index}) {
+    const p = (()=>{
         const audio = new Audio(sr);
-        console.log(sr,audio)
         audio.play();
-        //setImg(imgUrl)
-        //setTitle(title)
-        console.log("***********************")
+        
         setIndex(index)
     })
   return (
     <div className='song'>
-        <img src={imgUrl} height={40} width={40} className='smallImg'/>
+        <img src={imgUrl} height={40} width={40} className='smallImg' alt="img"/>
         <h3 className='songTitle'>{title}</h3>
-        <i class="fa-solid fa-play play2" onClick={play}/>
+        <i class="fa-solid fa-play play2" onClick={p}/>
     </div>
   )
 }
