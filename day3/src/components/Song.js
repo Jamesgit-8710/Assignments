@@ -1,14 +1,15 @@
 import React from 'react'
 import '../styles/song.css'
 
-function Song({imgUrl,title,sr,setImg,setTitle,setIndex}) {
+function Song({imgUrl,title,sr,setImg,setTitle,setIndex,index}) {
     const play = (()=>{
         const audio = new Audio(sr);
         console.log(sr,audio)
         audio.play();
-        setImg(imgUrl)
-        setTitle(title)
-        setIndex()
+        //setImg(imgUrl)
+        //setTitle(title)
+        console.log("***********************")
+        setIndex(index)
     })
   return (
     <div className='song'>

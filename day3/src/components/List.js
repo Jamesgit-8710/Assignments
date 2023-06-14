@@ -16,7 +16,7 @@ function List({setImg,setTitle,setIndex}) {
   return (
     <div className='list'>
         {obj.map((e,index)=>{
-            return <Song imgUrl={e.imgurl} title={e.title} sr={e.src}  setImg={setI} setTitle={setT} setIndex={setIn(index)}/>
+            return <Song imgUrl={e.imgurl} title={e.title} sr={e.src}  setImg={setI} setTitle={setT} setIndex={setIn} index={index}/>
         })}
     </div>
   )
