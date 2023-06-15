@@ -11,7 +11,7 @@ function List() {
       <div>
         <Card className="dayCard"
           hoverable
-          style={{ width: 150 }}
+          style={{ width: 60 }}
           cover={
             <img
               alt="example"

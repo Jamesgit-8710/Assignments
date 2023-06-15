@@ -7,7 +7,7 @@ import List from "../components/List";
 
 function Home() {
   return (
-    <div style={{ backgroundImage: `url(${hills})` }} className="p">
+    <div style={{ backgroundImage: `url(${hills})`}} className="p">
       <div style={{ backgroundColor: "rgba(0, 0, 0, 0)" }} className="ip">
         <Navbar />
         <MainBody/>
