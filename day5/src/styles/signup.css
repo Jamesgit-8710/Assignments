@@ -1,0 +1,16 @@
+.signLeft{
+    height: 100%;
+    width: 50%;
+    background-color: rgb(25, 31, 53);
+    padding: 0px;
+}
+
+.signRight{
+    height: 91.3%;
+    width: 45%;
+    background-color: white;
+    text-align: center;
+    padding: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+}

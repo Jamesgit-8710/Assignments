@@ -1,0 +1,40 @@
+.home{
+    height: 1500px;
+    width: 100vw;
+    background-color: rgb(238, 238, 238);
+}
+
+.logo{
+    color: darkblue;
+    margin: 20px;
+    margin-left: 40px;
+}
+
+.mainTop{
+    height: 50%;
+    width: 100vw;
+    display: flex;
+}
+
+.mainLeft{
+    width: 50%;
+    height: 70%;
+    /* background-color: rgb(165, 195, 255); */
+}
+
+.mainRight{
+    height: 90%;
+    width: 50%;
+    border-radius: 0px 0px 0px 900px;
+    background-color: rgb(165, 195, 255);
+}
+
+.rightNav{
+    display: flex;
+    flex-direction: row-reverse;
+    padding: 20px;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
