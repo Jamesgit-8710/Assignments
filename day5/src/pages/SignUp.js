@@ -1,4 +1,4 @@
-import React, { useState , useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { RadioChangeEvent } from "antd";
 import { Radio } from "antd";
 import "../styles/login.css";
@@ -8,39 +8,51 @@ import { Button, Checkbox, Form, Input } from "antd";
 import { Outlet, Link } from "react-router-dom";
 
 function SignUp() {
-    const [value, setValue] = useState("e");
-    const [user, setUser] = useState("");
-    const [pass, setPass] = useState("");
-  
-    const onAccessChange = (e) => {
-      setValue(e.target.value);
-    };
-  
-    const onUserChange = (e) => {
-      setUser(e.target.value);
-    };
-  
-    const onPassChange = (e) => {
-      setPass(e.target.value);
-    };
-  
-    const [items, setItems] = useState([]);
-  
-    useEffect(() => {
-      const x = JSON.parse(localStorage.getItem("users"));
-      setItems([...x]);
-    }, []);
+  const [value, setValue] = useState("e");
+  const [user, setUser] = useState("");
+  const [pass, setPass] = useState("");
+  const [path, setPath] = useState("");
 
-    const submit = () => {
-        if (user === "" || pass === "") {
-          console.log("fields are empty");
-        } else {
-          const x = JSON.parse(localStorage.getItem("users"));
-          setItems([...x, { u: user, p: pass }]);
-          localStorage.setItem("users", JSON.stringify(items));
-          //setItems((old)=> [ ...old, {u:user,p:pass} ])
-        }
-    };
+  const onAccessChange = (e) => {
+
+    setValue(e.target.value);
+  };
+
+  const onUserChange = (e) => {
+
+    setUser(e.target.value);
+  };
+
+  const onPassChange = (e) => {
+
+    setPass(e.target.value);
+  };
+
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    const x = JSON.parse(localStorage.getItem("users"));
+    console.log(x)
+    if (x !== null)
+      setItems([...x]);
+  }, []);
+
+  const submit = () => {
+
+    if (user === "" || pass === "") {
+      console.log("fields are empty");
+    } else {
+      const x = JSON.parse(localStorage.getItem("users"));
+      if (x !== null) {
+        setItems([...x, { u: user, p: pass ,prof: value}]);
+        localStorage.setItem("users", JSON.stringify(items));
+      } else {
+        setItems([{ u: user, p: pass ,prof: value}])
+        localStorage.setItem("users", JSON.stringify(items));
+      }
+      //setItems((old)=> [ ...old, {u:user,p:pass} ])
+    }
+  };
 
   return (
     <div className="login">
@@ -86,18 +98,17 @@ function SignUp() {
                 <Radio value={"a"}>Admin</Radio>
               </Radio.Group>
               <br />
-              <Form.Item>
-              {/* <Link to={"/login"}> */}
+              
+                <Form.Item>
                 <Button
-                  type="primary"
-                  htmlType="submit"
-                  className="login-form-button"
+                  type="primary" htmlType="submit" className="login-form-button"
                   onClick={submit}
                 >
                   CREATE
                 </Button>
-                {/* </Link> */}
-              </Form.Item>
+                </Form.Item>
+                
+              
               Aready have account? <Link to={"/login"}><a>login</a></Link>
             </Form>
           </div>

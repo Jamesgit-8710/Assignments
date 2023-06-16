@@ -32,14 +32,16 @@ function MainBody() {
 
   useEffect(() => {
     const x = async () => {
-      let response = await f();
-      setUserData(response.data.data.timelines[0].intervals)
+      let res = await f();
+      setUserData(res.data.data.timelines[0].intervals)
+      //response.data.data.timelines[0].intervals
     }
 
     x();
-    console.log(userData[0].values.temperature)
+    //console.log(userData)
+    //userData[0].values.temperature
 
-  }, []);
+  },);
 
 
   return (

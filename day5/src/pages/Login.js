@@ -14,16 +14,118 @@ function Login() {
   const [pass, setPass] = useState("");
   const [next, setNext] = useState("")
 
-  const onAccessChange = (e) => {
-    setValue(e.target.value);
+  const onAccessChange = (event) => {
+    if (user === "" || event.target.value === "") {
+      //console.log("fields are empty");
+    } else {
+      const x = JSON.parse(localStorage.getItem("users"));
+
+      if (x !== null) {
+
+        let flag = 0;
+
+        {
+          x.map((e) => {
+            //console.log(e.u,e.p)
+            if (e.u == user && e.p == pass && e.prof == event.target.value) {
+              console.log("login Successful!")
+              flag = 1;
+            }
+          })
+        }
+
+        if (flag) {
+          setNext("/home")
+        } else {
+          setNext("")
+        }
+
+      }
+
+      // setItems([...x, { u: user, p: pass }]);
+      // localStorage.setItem("users", JSON.stringify(items));
+
+
+      //setItems((old)=> [ ...old, {u:user,p:pass} ])
+    }
+
+    setValue(event.target.value);
   };
 
-  const onUserChange = (e) => {
-    setUser(e.target.value);
+  const onUserChange = (event) => {
+    if (event.target.value === "" || pass === "") {
+      //console.log("fields are empty");
+    } else {
+      const x = JSON.parse(localStorage.getItem("users"));
+
+      if (x !== null) {
+
+        let flag = 0;
+
+        {
+          x.map((e) => {
+            //console.log(e.u,e.p)
+            if (e.u == event.target.value && e.p == pass && e.prof == value) {
+              console.log("login Successful!")
+              flag = 1;
+            }
+          })
+        }
+
+        if (flag) {
+          setNext("/home")
+        } else {
+          setNext("")
+        }
+
+      }
+
+      // setItems([...x, { u: user, p: pass }]);
+      // localStorage.setItem("users", JSON.stringify(items));
+
+
+      //setItems((old)=> [ ...old, {u:user,p:pass} ])
+    }
+
+
+    setUser(event.target.value);
   };
 
-  const onPassChange = (e) => {
-    setPass(e.target.value);
+  const onPassChange = (event) => {
+    if (user === "" || event.target.value === "") {
+      //console.log("fields are empty");
+    } else {
+      const x = JSON.parse(localStorage.getItem("users"));
+
+      if (x !== null) {
+
+        let flag = 0;
+
+        {
+          x.map((e) => {
+            //console.log(e.u,e.p)
+            if (e.u == user && e.p == event.target.value && e.prof == value) {
+              console.log("login Successful!")
+              flag = 1;
+            }
+          })
+        }
+
+        if (flag) {
+          setNext("/home")
+        } else {
+          setNext("")
+        }
+
+      }
+
+      // setItems([...x, { u: user, p: pass }]);
+      // localStorage.setItem("users", JSON.stringify(items));
+
+
+      //setItems((old)=> [ ...old, {u:user,p:pass} ])
+    }
+    setPass(event.target.value);
   };
 
   const [items, setItems] = useState([]);
@@ -49,24 +151,16 @@ function Login() {
   // }, [items]);
 
   const submit = () => {
-    if (user === "" || pass === "") {
-      console.log("fields are empty");
-    } else {
-      const x = JSON.parse(localStorage.getItem("users"));
 
-      {x.map((e)=>{
-        if(e.u==user&&e.p==pass){
-          console.log("login Successful!")
-          setNext("/home")
-        }
-      })}
-
-      // setItems([...x, { u: user, p: pass }]);
-      // localStorage.setItem("users", JSON.stringify(items));
+    //console.log(next,888888888)
 
 
-      //setItems((old)=> [ ...old, {u:user,p:pass} ])
-    }
+    // setItems([...x, { u: user, p: pass }]);
+    // localStorage.setItem("users", JSON.stringify(items));
+
+
+    //setItems((old)=> [ ...old, {u:user,p:pass} ])
+
   };
 
   return (
@@ -80,7 +174,7 @@ function Login() {
               name="normal_login"
               className="login-form"
               initialValues={{ remember: true }}
-              // onFinish={console.log("successful")}
+            // onFinish={console.log("successful")}
             >
               <Form.Item
                 name="username"
@@ -116,19 +210,22 @@ function Login() {
                 <Radio value={"a"}>Admin</Radio>
               </Radio.Group>
               <br />
+
               <Form.Item>
-              <Link to={next}>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  className="login-form-button"
-                  onClick={submit}
-                >
-                  Log in
-                </Button>
-              </Link>
+                <Link to={next}>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    className="login-form-button"
+                    onClick={submit}
+                  >
+
+                    Log in
+
+                  </Button>
+                </Link>
               </Form.Item>
-              
+
               or <Link to="/signup"><a>register now!</a></Link>
             </Form>
           </div>
