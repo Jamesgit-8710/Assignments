@@ -6,6 +6,7 @@ import "../styles/signup.css";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input } from "antd";
 import { Outlet, Link } from "react-router-dom";
+import {useNavigate} from "react-router-dom"
 
 function SignUp() {
   const [value, setValue] = useState("e");
@@ -52,6 +53,12 @@ function SignUp() {
       }
       //setItems((old)=> [ ...old, {u:user,p:pass} ])
     }
+  };
+
+  const navigate = useNavigate();
+
+  const loginPage = () => {
+    navigate('/login',{replace:true})
   };
 
   return (
@@ -109,7 +116,7 @@ function SignUp() {
                 </Form.Item>
                 
               
-              Aready have account? <Link to={"/login"}><a>login</a></Link>
+              Aready have account? <a onClick={loginPage}>login</a>
             </Form>
           </div>
         </div>

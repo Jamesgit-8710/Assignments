@@ -5,6 +5,7 @@ import "../styles/login.css";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input } from "antd";
 import { Outlet, Link } from "react-router-dom";
+import {useNavigate} from "react-router-dom"
 
 function Login() {
   //localStorage.setItem("users", JSON.stringify(localStorage.getItem("users")));
@@ -23,21 +24,25 @@ function Login() {
       if (x !== null) {
 
         let flag = 0;
+        let i=-1;
 
         {
-          x.map((e) => {
+          x.map((e,index) => {
             //console.log(e.u,e.p)
             if (e.u == user && e.p == pass && e.prof == event.target.value) {
               console.log("login Successful!")
               flag = 1;
+              i=index
             }
           })
         }
 
         if (flag) {
           setNext("/home")
+          localStorage.setItem("currUser", JSON.stringify(i));
         } else {
           setNext("")
+          localStorage.removeItem('currUser');
         }
 
       }
@@ -61,21 +66,25 @@ function Login() {
       if (x !== null) {
 
         let flag = 0;
+        let i=-1;
 
         {
-          x.map((e) => {
+          x.map((e,index) => {
             //console.log(e.u,e.p)
             if (e.u == event.target.value && e.p == pass && e.prof == value) {
               console.log("login Successful!")
               flag = 1;
+              i=index
             }
           })
         }
 
         if (flag) {
           setNext("/home")
+          localStorage.setItem("currUser", JSON.stringify(i));
         } else {
           setNext("")
+          localStorage.removeItem('currUser');
         }
 
       }
@@ -100,21 +109,25 @@ function Login() {
       if (x !== null) {
 
         let flag = 0;
+        let i = -1;
 
         {
-          x.map((e) => {
+          x.map((e,index) => {
             //console.log(e.u,e.p)
             if (e.u == user && e.p == event.target.value && e.prof == value) {
               console.log("login Successful!")
               flag = 1;
+              i = index;
             }
           })
         }
 
         if (flag) {
           setNext("/home")
+          localStorage.setItem("currUser", JSON.stringify(i));
         } else {
           setNext("")
+          localStorage.removeItem('currUser');
         }
 
       }
@@ -150,7 +163,22 @@ function Login() {
   //   console.log(x)
   // }, [items]);
 
-  const submit = () => {
+
+  // const history = createBrowserHistory();
+
+  const navigate = useNavigate();
+
+  const submit = ()=> {
+    navigate(next,{replace:true})
+  }
+
+  
+  const signupPage = () => {
+
+    
+    navigate('/signup',{replace:true})   
+    
+    //history.replace("")
 
     //console.log(next,888888888)
 
@@ -212,7 +240,7 @@ function Login() {
               <br />
 
               <Form.Item>
-                <Link to={next}>
+                
                   <Button
                     type="primary"
                     htmlType="submit"
@@ -223,10 +251,10 @@ function Login() {
                     Log in
 
                   </Button>
-                </Link>
+                
               </Form.Item>
 
-              or <Link to="/signup"><a>register now!</a></Link>
+              or <a onClick={signupPage}>register now!</a>
             </Form>
           </div>
         </div>
