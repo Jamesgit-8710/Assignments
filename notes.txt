@@ -7,11 +7,11 @@
 - navigate
 
 
-should be able to signup with validations
-able to login with same details 
-user not exist
-stay loged after reloading the page
-able to update personal details
+should be able to signup with validations >>
+able to login with same details >>
+user not exist >>
+stay loged after reloading the page >>
+able to update personal details >>
 
-admin vendor - add product, update
-costumer - add to cart (optional)
+admin vendor - add product >> , delete >>
+costumer - add to cart (optional) >>

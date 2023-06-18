@@ -1,18 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { RadioChangeEvent } from "antd";
+import React, { useState } from "react";
 import { Radio } from "antd";
 import "../styles/login.css";
 import "../styles/signup.css";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input } from "antd";
-import { Outlet, Link } from "react-router-dom";
-import {useNavigate} from "react-router-dom"
+import { Button, Form, Input } from "antd";
+import { useNavigate } from "react-router-dom"
+import { message } from 'antd';
 
 function SignUp() {
+
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const info = () => {
+    messageApi.info('successful');
+  };
+
   const [value, setValue] = useState("e");
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
-  const [path, setPath] = useState("");
+  // const [path, setPath] = useState("");
 
   const onAccessChange = (e) => {
 
@@ -29,44 +35,81 @@ function SignUp() {
     setPass(e.target.value);
   };
 
-  const [items, setItems] = useState([]);
+  // const [items, setItems] = useState([]);
 
-  useEffect(() => {
-    const x = JSON.parse(localStorage.getItem("users"));
-    console.log(x)
-    if (x !== null)
-      setItems([...x]);
-  }, []);
+  // Important
+
+  // useEffect(() => {
+  //   const x = JSON.parse(localStorage.getItem("users"));
+  //   console.log(x)
+  //   if (x !== null)
+  //     setItems([...x]);
+  // }, []);
+
+  // const set = (e) => {
+  //   setItems([...e, { u: user, p: pass, prof: value }])
+  // }
+
+  // const set2 = () => {
+  //   setItems([{ u: user, p: pass, prof: value }])
+  // }
 
   const submit = () => {
+
+    const x = JSON.parse(localStorage.getItem("users"));
 
     if (user === "" || pass === "") {
       console.log("fields are empty");
     } else {
-      const x = JSON.parse(localStorage.getItem("users"));
+
       if (x !== null) {
-        setItems([...x, { u: user, p: pass ,prof: value}]);
-        localStorage.setItem("users", JSON.stringify(items));
+
+        const temp = [...x, { u: user, p: pass, prof: value }]
+        // set(arr)
+        info();
+
+        const delay = 1000;
+
+        const navigateWithDelay = () => {
+          navigate("/login", { replace: true });
+        };
+
+        setTimeout(navigateWithDelay, delay);
+
+        localStorage.setItem("users", JSON.stringify(temp));
       } else {
-        setItems([{ u: user, p: pass ,prof: value}])
-        localStorage.setItem("users", JSON.stringify(items));
+
+        const temp = [{ u: user, p: pass, prof: value }]
+        info();
+        // set2()
+
+        const delay = 1000; // Delay in milliseconds (e.g., 8000 for 8 seconds)
+
+        const navigateWithDelay = () => {
+          navigate("/login", { replace: true });
+        };
+
+        setTimeout(navigateWithDelay, delay);
+
+        localStorage.setItem("users", JSON.stringify(temp));
       }
-      //setItems((old)=> [ ...old, {u:user,p:pass} ])
+
     }
   };
 
   const navigate = useNavigate();
 
   const loginPage = () => {
-    navigate('/login',{replace:true})
+    navigate('/login', { replace: true })
   };
 
   return (
     <div className="login">
+      {contextHolder}
       <div className="logDiv">
-        <div className="leftDiv signLeft"></div>
+        {/* <div className="leftDiv signLeft"></div> */}
         <div className="rightDiv signRight">
-          <h2 style={{ marginBottom: 25 }}>CREAT NEW ACCOUNT</h2>
+          <h2 style={{ marginBottom: 25, color: "rgb(65, 65, 65)" }}>CREAT NEW ACCOUNT</h2>
 
           <div className="inputs">
             <Form
@@ -81,10 +124,11 @@ function SignUp() {
                   { required: true, message: "Please input your Username!" },
                 ]}
               >
-                <Input
+                <Input className="input"
                   prefix={<UserOutlined className="site-form-item-icon" />}
                   placeholder="Username"
                   onChange={onUserChange}
+                  value={user}
                 />
               </Form.Item>
               <Form.Item
@@ -93,29 +137,30 @@ function SignUp() {
                   { required: true, message: "Please input your Password!" },
                 ]}
               >
-                <Input
+                <Input className="input"
                   prefix={<LockOutlined className="site-form-item-icon" />}
                   type="password"
                   placeholder="Password"
                   onChange={onPassChange}
+                  value={pass}
                 />
               </Form.Item>
               <Radio.Group onChange={onAccessChange} className="radio" value={value}>
-                <Radio value={"e"}>Employee</Radio>
+                <Radio value={"e"}>User</Radio>
                 <Radio value={"a"}>Admin</Radio>
               </Radio.Group>
               <br />
-              
-                <Form.Item>
+
+              <Form.Item>
                 <Button
                   type="primary" htmlType="submit" className="login-form-button"
-                  onClick={submit}
+                  onClick={submit} style={{ marginTop: 40 }}
                 >
                   CREATE
                 </Button>
-                </Form.Item>
-                
-              
+              </Form.Item>
+
+
               Aready have account? <a onClick={loginPage}>login</a>
             </Form>
           </div>
