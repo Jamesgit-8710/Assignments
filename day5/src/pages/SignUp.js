@@ -4,15 +4,14 @@ import "../styles/login.css";
 import "../styles/signup.css";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
-import { useNavigate } from "react-router-dom"
-import { message } from 'antd';
+import { useNavigate } from "react-router-dom";
+import { message } from "antd";
 
 function SignUp() {
-
   const [messageApi, contextHolder] = message.useMessage();
 
   const info = () => {
-    messageApi.info('successful');
+    messageApi.info("successful");
   };
 
   const [value, setValue] = useState("e");
@@ -21,17 +20,14 @@ function SignUp() {
   // const [path, setPath] = useState("");
 
   const onAccessChange = (e) => {
-
     setValue(e.target.value);
   };
 
   const onUserChange = (e) => {
-
     setUser(e.target.value);
   };
 
   const onPassChange = (e) => {
-
     setPass(e.target.value);
   };
 
@@ -55,16 +51,13 @@ function SignUp() {
   // }
 
   const submit = () => {
-
     const x = JSON.parse(localStorage.getItem("users"));
 
     if (user === "" || pass === "") {
-      console.log("fields are empty");
+      //console.log("fields are empty");
     } else {
-
       if (x !== null) {
-
-        const temp = [...x, { u: user, p: pass, prof: value }]
+        const temp = [...x, { u: user, p: pass, prof: value }];
         // set(arr)
         info();
 
@@ -78,8 +71,7 @@ function SignUp() {
 
         localStorage.setItem("users", JSON.stringify(temp));
       } else {
-
-        const temp = [{ u: user, p: pass, prof: value }]
+        const temp = [{ u: user, p: pass, prof: value }];
         info();
         // set2()
 
@@ -93,14 +85,13 @@ function SignUp() {
 
         localStorage.setItem("users", JSON.stringify(temp));
       }
-
     }
   };
 
   const navigate = useNavigate();
 
   const loginPage = () => {
-    navigate('/login', { replace: true })
+    navigate("/login", { replace: true });
   };
 
   return (
@@ -109,7 +100,9 @@ function SignUp() {
       <div className="logDiv">
         {/* <div className="leftDiv signLeft"></div> */}
         <div className="rightDiv signRight">
-          <h2 style={{ marginBottom: 25, color: "rgb(65, 65, 65)" }}>CREAT NEW ACCOUNT</h2>
+          <h2 style={{ marginBottom: 25, color: "rgb(65, 65, 65)" }}>
+            CREAT NEW ACCOUNT
+          </h2>
 
           <div className="inputs">
             <Form
@@ -124,7 +117,8 @@ function SignUp() {
                   { required: true, message: "Please input your Username!" },
                 ]}
               >
-                <Input className="input"
+                <Input
+                  className="input"
                   prefix={<UserOutlined className="site-form-item-icon" />}
                   placeholder="Username"
                   onChange={onUserChange}
@@ -137,7 +131,8 @@ function SignUp() {
                   { required: true, message: "Please input your Password!" },
                 ]}
               >
-                <Input className="input"
+                <Input
+                  className="input"
                   prefix={<LockOutlined className="site-form-item-icon" />}
                   type="password"
                   placeholder="Password"
@@ -145,22 +140,26 @@ function SignUp() {
                   value={pass}
                 />
               </Form.Item>
-              <Radio.Group onChange={onAccessChange} className="radio" value={value}>
+              <Radio.Group
+                onChange={onAccessChange}
+                className="radio"
+                value={value}
+              >
                 <Radio value={"e"}>User</Radio>
                 <Radio value={"a"}>Admin</Radio>
               </Radio.Group>
               <br />
-
               <Form.Item>
                 <Button
-                  type="primary" htmlType="submit" className="login-form-button"
-                  onClick={submit} style={{ marginTop: 40 }}
+                  type="primary"
+                  htmlType="submit"
+                  className="login-form-button"
+                  onClick={submit}
+                  style={{ marginTop: 40 }}
                 >
                   CREATE
                 </Button>
               </Form.Item>
-
-
               Aready have account? <a onClick={loginPage}>login</a>
             </Form>
           </div>
