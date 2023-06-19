@@ -7,6 +7,21 @@ export const data = [
   {
     id: 2,
     nam: "avi tomar",
-    url: "https://th.bing.com/th/id/R.de88e6d6d21875a0c4dc0302b6954ce8?rik=BiC%2f2QJynEdUwQ&riu=http%3a%2f%2fclipart-library.com%2fimages%2fpcod9g7qi.png&ehk=j3ZPo2BHFT36JnJIZP%2f6V9%2bGxdDWY6IAzY0mFF%2b8%2boc%3d&risl=&pid=ImgRaw&r=0",
+    url: "https://clipground.com/images/avatar-clipart-7.jpg",
   },
+  {
+    id: 3,
+    nam: "akarsh",
+    url: "https://static.vecteezy.com/system/resources/previews/000/457/578/original/set-of-colorful-avatars-of-characters-vector.jpg",
+  },
+  {
+    id: 4,
+    nam: "harsh",
+    url: "https://clipground.com/images/img_avatar2-clipart-8.png",
+  },
+  {
+    id: 5,
+    nam: "ankit",
+    url: "https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/man4-512.png",
+  }
 ];

@@ -11,14 +11,18 @@
 }
 
 .innerDiv{
-  height: 80vh;
-  width: 30vw;
+  height: 90vh;
+  width: 40vw;
   background-color: white;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  overflow: scroll;
+}
+
+.innerDiv::-webkit-scrollbar {
+  display: none;
 }
 
 .topDiv{
-  height: 37%;
   width: 100%;
   /* background-color: red; */
 }
@@ -32,7 +36,6 @@
 }
 
 .bottomDiv{
-  height: 50%;
   width: 100%;
   /* background-color: blue; */
 }
@@ -40,6 +43,10 @@
 .header{
   height: 45px;
   width: 90%;
-  background-color: gainsboro;
+  /* background-color: gainsboro; */
   margin: auto;
+  margin-bottom: 5px;
+  padding-bottom: 10px;
+  display: flex;
+  border-bottom: 1px solid rgb(201, 201, 201);
 }

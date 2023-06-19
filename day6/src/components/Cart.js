@@ -1,50 +1,37 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addUser, delUser } from "../features/CartSlice";
+import { addUser } from "../features/CartSlice";
 import "../styles/cart.css";
 import { Button, Form, Input, Select } from "antd";
 import { DatePicker, Space } from "antd";
 import { data } from "../store/Data";
-import { ClockCircleOutlined } from "@ant-design/icons";
 import { Avatar, Badge } from "antd";
-import img from "../assets/img.jpg";
 
 export function Cart() {
-  console.log(data);
   const [title, setTitle] = useState("");
   const [des, setDes] = useState("");
   const [to, setTo] = useState(0);
   const [date, setDate] = useState("");
 
   const onTitle = (e) => {
-    console.log(e.target.value);
     setTitle(e.target.value);
   };
 
   const onDes = (e) => {
-    console.log(e.target.value);
     setDes(e.target.value);
   };
 
   const onTo = (e) => {
-    console.log(e);
     setTo(e);
   };
 
-  const onDate = (e) => {
-    // setDate(e);
+  const onDate = (date, dateString) => {
+    setDate(dateString);
   };
+  
 
   const dispatch = useDispatch();
-  const cart = useSelector((state) => state.cart);
-
-  const add = () => {
-    dispatch(addUser("data"));
-  };
-
-  const del = () => {
-    dispatch(delUser());
-  };
+  const cart = useSelector((state) => state.users);
 
   const { Option } = Select;
 
@@ -58,10 +45,21 @@ export function Cart() {
   };
 
   const assign = () => {
-    console.log("clicked", title, des, to, date);
-    if (title !== "" && des !== "" && to !== 0) {
-      console.log("clickedin");
-      dispatch(addUser({ title: title, des: des, to: to, date: date }));
+
+    if (title !== "" && des !== "" && to !== 0 && date!=="  ") {
+  
+      let nam = "";
+      let url = "";
+
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].id === to) {
+          nam = data[i].nam
+          url = data[i].url
+          break;
+        }
+      }
+
+      dispatch(addUser({ title: title, des: des, to: to, date: date, nam: nam, url: url }));
     }
   };
 
@@ -80,15 +78,15 @@ export function Cart() {
           >
             <Form.Item
               className="width"
-              name="website"
+              name="Title"
               label="Title"
               rules={[{ required: true }]}
             >
-              <Input onChange={onTitle} />
+              <Input onChange={onTitle}  />
             </Form.Item>
             <Form.Item
               className="width"
-              name="note"
+              name="Description"
               label="Description"
               rules={[{ required: true }]}
             >
@@ -97,7 +95,7 @@ export function Cart() {
 
             <Form.Item
               className="width"
-              name="gender"
+              name="Assign to"
               label="Assign to :"
               rules={[{ required: true }]}
             >
@@ -105,9 +103,7 @@ export function Cart() {
                 {data.map((e) => {
                   return <Option value={e.id}>{e.nam}</Option>;
                 })}
-                {/*                 
-                <Option value="female">xyz</Option>
-                <Option value="other">xyz</Option> */}
+                
               </Select>
             </Form.Item>
 
@@ -134,39 +130,64 @@ export function Cart() {
         </div>
         <div className="bottomDiv">
           <div className="header">
+            <h2>Tasks</h2>
             {data.map((e) => {
               let c = 0;
 
-              {
-                cart.map((cart, key) => {
-                  if (cart.to == e.id) c++;
+              
+                cart.filter((cart) => {
+                  if (cart.to === e.id){
+                    c++;
+                  }
                 });
+              
+
+              if (c !== 0) {
+                return (
+                  <Space size="middle" style={{ marginTop: 3 ,marginLeft: 12}}>
+                    <Badge count={c}>
+                      <Avatar
+                        shape="square"
+                        size="large"
+                        style={{
+                          backgroundImage: `url(${e.url})`,
+                          backgroundSize: "contain",
+                        }}
+                      />
+                    </Badge>
+                  </Space>
+                )
               }
 
-              return (
-                <Space size="middle" style={{ marginTop: 3 }}>
-                  <Badge count={c}>
-                    <Avatar
-                      shape="square"
-                      size="large"
-                      style={{
-                        backgroundImage: `url(${img})`,
-                        backgroundSize: "contain",
-                      }}
-                    />
-                  </Badge>
-                </Space>
-              );
+
             })}
           </div>
           <div>
-            {cart.map((cart, key) => (
-              <div key={key}>
-                title: {cart.title} Description: {cart.des} Assigned to:
-                {cart.to} date :{cart.date} fsdfdfsa
-              </div>
-            ))}
+            {cart.map((cart, key) => {
+
+              return (
+                <div key={key} style={{margin: "10px auto", padding: 5, width: "87%", backgroundColor: "aliceblue", display: "flex", boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1)" }}>
+                  <Space size="middle" style={{display: "block"}}>
+                    <Badge count={0}>
+                      <Avatar
+                        shape="square"
+                        size="large"
+                        style={{
+                          backgroundImage: `url(${cart.url})`,
+                          backgroundSize: "contain",
+                        }}
+                      />
+                    </Badge>
+                  </Space>
+                  <div style={{ marginLeft: 5 }}>
+                    <h4 style={{ margin: 0, textAlign: "left" }}>Task: {cart.title} &nbsp; Assign to: {cart.nam}</h4>
+                    <p style={{ margin: 0, textAlign: "left" ,fontSize: "12px"}}>{cart.date}</p>
+                    <p style={{ margin: 0, textAlign: "left" ,fontSize: "14px"}}>{cart.des}</p>
+                  </div>
+                </div>)
+            })}
           </div>
+
         </div>
       </div>
     </div>
