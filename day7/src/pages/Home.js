@@ -140,10 +140,10 @@ function Home() {
       <div className="main">
         <div className="notes">
           {note.map((e, key) => {
-            const x = e.title;
-            const y = e.des;
+            const x = e.title.toLowerCase();
+            const y = e.des.toLowerCase();
 
-            if (x.includes(srch) || y.includes(srch)) {
+            if (x.includes(srch.toLowerCase()) || y.includes(srch.toLowerCase())) {
               return (
                 <Note
                   key={key}
