@@ -110,19 +110,6 @@ function Home() {
 
     setUpdateVis("none")
 
-    // setTitle(x[index].title);
-    // setContent(x[index].des);
-    
-    // if (x) {
-    //   const y = {
-    //     title: "oldTitle",
-    //     content: "oldDes",
-    //   };
-    //   // console.log(y)
-      
-    // } else {
-    //   console.log(x);
-    // }
   };
 
   return (
