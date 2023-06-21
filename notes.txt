@@ -6,12 +6,11 @@
 - get post with form action
 - navigate
 
+npx create-react-app day8
+npm install @reduxjs/toolkit
+npm install react-redux
+npm install @mui/material @emotion/react @emotion/styled
+npm install antd --save
+npm i redux-persist
 
-should be able to signup with validations >>
-able to login with same details >>
-user not exist >>
-stay loged after reloading the page >>
-able to update personal details >>
-
-admin vendor - add product >> , delete >>
-costumer - add to cart (optional) >>
+https://fakestoreapi.com/docs
