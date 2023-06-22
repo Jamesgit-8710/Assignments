@@ -13,4 +13,4 @@ npm install @mui/material @emotion/react @emotion/styled
 npm install antd --save
 npm i redux-persist
 
-https://fakestoreapi.com/docs
+Api : https://fakestoreapi.com/docs
