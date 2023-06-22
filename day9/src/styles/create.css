@@ -15,7 +15,7 @@
 }
 
 .left{
-    height: calc(100vh - 70px);
+    height: calc(100vh - 63px);
     width: 400px;
     background-color: rgb(243, 243, 243);
     overflow-y: scroll;
@@ -28,9 +28,19 @@
 }
 
 .resume{
-    height: 90%;
+    height: 85%;
     width: 40%;
     background-color: white;
     margin: auto;
     margin-top: 50px;
+    overflow-y: scroll;
+    padding: 15px;
+}
+
+.margin{
+    margin-bottom: 15px;
+}
+
+.resume::-webkit-scrollbar {
+    display: none;
 }

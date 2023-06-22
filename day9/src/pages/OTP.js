@@ -1,20 +1,23 @@
 import React from "react";
 import { Button, Form, Input } from "antd";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { verify } from "../slices/user/otp.slice";
 import { useNavigate } from "react-router";
+import { addUser } from "../slices/user/otp.slice";
 
 function OTP() {
 
+  const state = useSelector((state) => state.users)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const onFinish = (values) => {
     const x = process.env.REACT_APP_OTP;
 
-    if(values.password===x){
-    dispatch(verify())
-    navigate("/home",{ replace: true })
+    if (values.password === x) {
+      dispatch(addUser(state.data))
+      dispatch(verify())
+      navigate("/", { replace: true })
     }
 
   };

@@ -8,14 +8,24 @@ import { useSelector } from 'react-redux';
 
 function App() {
 
+  const verified = useSelector((state) => state)
+
+  let element = <Login/>;
+  let element2 = "";
+
+  if(verified.otp.otpp){
+    element = <Home/>
+    element2=<Create/>
+  }else if(verified.users.status==="otp"){
+    element = <OTP/>
+  }
+
   return (
     <div>
       <BrowserRouter>
         <Routes>
-          <Route index element={<Login/>} />
-          <Route path={"/otp"} element={<OTP/>} />
-          <Route path={"/home"} element={<Home/>} />
-          <Route path={"/create"} element={<Create/>} />
+          <Route path={'/'} element={element} />
+          <Route path={'/create'} element={element2} />
         </Routes>
       </BrowserRouter>
       {/* <Home/> */}

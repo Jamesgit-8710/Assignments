@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Form, Input } from "antd";
 import "../styles/login.css";
 import { useDispatch } from "react-redux";
-import { addUser } from "../slices/user/user.slice";
+import { addUser, verify } from "../slices/user/user.slice";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
@@ -10,8 +10,9 @@ function Login() {
   const dispatch = useDispatch();
   const onFinish = (value) => {
     dispatch(addUser(value.PhoneNumber));
+    dispatch(verify("otp"))
     // console.log(value.PhoneNumber)
-    navigate("/otp",{ replace: true });
+    navigate("/",{ replace: true });
   };
 
   const onFinishFailed = (errorInfo) => {
