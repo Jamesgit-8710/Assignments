@@ -17,13 +17,15 @@ const resumeSlice = createSlice({
     }
   ],
   reducers: {
-    
+    log(state, action){
+      state.push(action.payload)
+    },
     addResume(state, action) {
-        
+        state[action.payload.i].data.push(action.payload.d)
     },
   },
 });
 
-export const { addResume } = resumeSlice.actions;
+export const { addResume , log } = resumeSlice.actions;
 
 export default resumeSlice.reducer;
