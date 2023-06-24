@@ -1,23 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Form, Input } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { verify } from "../slices/user/otp.slice";
 import { useNavigate } from "react-router";
 import { addUser } from "../slices/user/otp.slice";
 import { log } from "../slices/resume/resume.slice";
+import OtpInput from 'react-otp-input';
+import '../styles/otp.css'
+import img from "../assets/otp.webp";
+import { message } from 'antd';
 
 function OTP() {
+
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const info = () => {
+    messageApi.info('wrong OTP');
+  };
+
+
   const state = useSelector((state) => state.users);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [otp, setOtp] = useState('');
 
   const state3 = useSelector((state) => state.resumes);
   const state2 = useSelector((state) => state.otp);
 
-  const onFinish = (values) => {
+  const onFinish = () => {
     const x = process.env.REACT_APP_OTP;
 
-    if (values.password === x) {
+    if (otp === x) {
       dispatch(addUser(state.data));
       dispatch(verify());
 
@@ -37,6 +50,8 @@ function OTP() {
       }
 
       navigate("/", { replace: true });
+    } else {
+      info();
     }
   };
 
@@ -46,28 +61,37 @@ function OTP() {
 
   return (
     <div className="login">
-      <div className="form">
-        <Form
+      {contextHolder}
+      <div className="pic" style={{ borderRadius: "15px 0px 0px 15px", backgroundImage: `url(${img})` }}>
+
+      </div>
+      <div className="form" style={{ textAlign: "center", borderRadius: "0px 15px 15px 0px" }}>
+        <h2 style={{ marginTop: 75, color: "rgba(0, 14, 62, 0.8)" }}>Authentication Code</h2>
+        <Form style={{ margin: 60, marginTop: 80 }}
           name="basic"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
-          style={{ maxWidth: 600 }}
           initialValues={{ remember: true }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
-          <Form.Item
-            label="OTP"
-            name="password"
-            rules={[{ required: true, message: "Please input your password!" }]}
+          <Form.Item style={{ marginLeft: "35px" }}
+            name="OTP"
+            rules={[{ required: true, message: "Please enter the OTP" }]}
           >
-            <Input.Password placeholder="OTP" />
+            <OtpInput
+              value={otp}
+              onChange={setOtp}
+              numInputs={4}
+              renderSeparator={<span style={{ color: "rgba(0, 14, 62, 0)" }}>{"msp"}</span>}
+              renderInput={(props) => <input {...props} className="otp" />}
+            />
           </Form.Item>
 
-          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-            <Button type="primary" htmlType="submit">
-              Submit
+
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit" style={{ height: "43px", width: "100%", fontSize: 18, marginTop: 38, backgroundColor: "rgb(0, 14, 62, 0.8)" }}>
+              verify
             </Button>
           </Form.Item>
         </Form>

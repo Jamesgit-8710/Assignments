@@ -12,12 +12,13 @@
 
 .main{
     display: flex;
+    /* color: rgb(255, 251, 251); */
 }
 
 .left{
     height: calc(100vh - 63px);
     width: 400px;
-    background-color: rgb(243, 243, 243);
+    background-color: rgba(0, 0, 0, 0.279);
     overflow-y: scroll;
     display: flex;
     flex-direction: column;
@@ -58,6 +59,12 @@
 .submit:hover{
     background-color: white;
     color: rgb(29, 79, 153)!important;
+}
+
+.selected{
+    background-color: rgba(0, 0, 51, 0.222);
+    padding: 5px;
+    border-radius: 10px;
 }
 
 .resume::-webkit-scrollbar {
