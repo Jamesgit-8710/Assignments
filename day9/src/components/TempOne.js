@@ -71,9 +71,9 @@ function TempOne({ data, s }) {
           }}
         >
           <h3>Work experience</h3>
-          <h4 style={{ wordBreak: "break-word" }}>{data.com}</h4>
-          <p>{data.ft}</p>
-          <p>{data.des}</p>
+          <h4 style={{ wordBreak: "break-word", marginBottom: 0}}>{data.com}</h4>
+          <p style={{margin: 0}}>{data.ft}</p>
+          <p style={{marginTop: 0}}>{data.des}</p>
         </div>
       </div>
     </>

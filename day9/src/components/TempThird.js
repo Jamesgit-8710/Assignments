@@ -39,8 +39,8 @@ function TempThird({ data, s }) {
             <p style={{ marginTop: 0 }}>{data.prof}</p>
             <p style={{ wordBreak: "break-word" }}>{data.about}</p>
             <h2 style={{ marginTop: 30, marginBottom: 0 }}>EXPERIENCE</h2>
-            <h4 style={{ wordBreak: "break-word" }}>{data.com}</h4>
-            <p style={{ marginBottom: 2 }}>{data.ft}</p>
+            <h4 style={{ wordBreak: "break-word" , marginBottom: 0}}>{data.com}</h4>
+            <p style={{ margin: 0 }}>{data.ft}</p>
             <p style={{ wordBreak: "break-word", marginTop: 0 }}>{data.des}</p>
           </div>
         </div>

@@ -35,8 +35,8 @@ function TempTwo({ data, s }) {
             <h2 style={{ color: "#DEC736", marginTop: 50, marginBottom: 0 }}>About</h2>
             <p style={{ wordBreak: "break-word" }}>{data.about}</p>
             <h2 style={{ color: "#DEC736", marginTop: 50, marginBottom: 0 }}>EXPERIENCE</h2>
-            <h4 style={{ wordBreak: "break-word" }}>{data.com}</h4>
-            <p style={{ marginBottom: 2 }}>{data.ft}</p>
+            <h4 style={{ wordBreak: "break-word" ,marginBottom: 0}}>{data.com}</h4>
+            <p style={{ margin: 0 }}>{data.ft}</p>
             <p style={{ wordBreak: "break-word", marginTop: 0 }}>{data.des}</p>
           </div>
         </div>
