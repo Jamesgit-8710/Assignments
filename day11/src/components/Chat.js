@@ -28,22 +28,7 @@ function Chat() {
       <div className="chats">
         <Child bgColor={"#F1F6F9"} color={"#617481"} align={"left"} />
         <Child bgColor={"#FF5151"} color={"white"} align={"right"} />
-        <Child bgColor={"#F1F6F9"} color={"#617481"} align={"left"} />
-        <Child bgColor={"#FF5151"} color={"white"} align={"right"} />
-        <Child bgColor={"#F1F6F9"} color={"#617481"} align={"left"} />
-        <Child bgColor={"#FF5151"} color={"white"} align={"right"} />
-        <Child bgColor={"#F1F6F9"} color={"#617481"} align={"left"} />
-        <Child bgColor={"#FF5151"} color={"white"} align={"right"} />
-        <Child bgColor={"#F1F6F9"} color={"#617481"} align={"left"} />
-        <Child bgColor={"#FF5151"} color={"white"} align={"right"} />
-        <Child bgColor={"#F1F6F9"} color={"#617481"} align={"left"} />
-        <Child bgColor={"#FF5151"} color={"white"} align={"right"} />
-        <Child bgColor={"#F1F6F9"} color={"#617481"} align={"left"} />
-        <Child bgColor={"#FF5151"} color={"white"} align={"right"} />
-        <Child bgColor={"#F1F6F9"} color={"#617481"} align={"left"} />
-        <Child bgColor={"#FF5151"} color={"white"} align={"right"} />
-        <Child bgColor={"#F1F6F9"} color={"#617481"} align={"left"} />
-        <Child bgColor={"#FF5151"} color={"white"} align={"right"} />
+        
       </div>
       <div className="msgBox">
       <InputEmoji
