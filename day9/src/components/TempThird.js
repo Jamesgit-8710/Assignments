@@ -20,7 +20,7 @@ function TempThird({ data, s }) {
         <img src={download} onClick={(event) => { event.stopPropagation(); x(); }} height={25} style={{ backgroundColor: "rgb(0 ,0 ,0 ,0.4)", borderRadius: "10px", padding: 5, margin: "10px 0px 0px 34rem", position: "absolute", float: "right" }} />
         : null
       }    <div className="preview" id="down" >
-        <div style={{ height: "100%", width: "25%", color: "white", padding: "20px 30px", backgroundColor: "rgb(0, 21, 52)" }}>
+        <div style={{ height: "94.3%", width: "25%", color: "white", padding: "20px 30px", backgroundColor: "rgb(0, 21, 52)" }}>
           <img src={p2} height={130} style={{ padding: 5, backgroundColor: "rgb(223, 227, 233, 0.1)", borderRadius: "50%" }} />
           <div style={{ display: "flex", marginTop: 50 }}>
             <img src={phone} height={20} />

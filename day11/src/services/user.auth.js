@@ -1,30 +1,7 @@
-- naming method
-- arrow method
-- stop propagation
-- prevent defalt
-- conditional redering with turnery with nullish and with &&
-- get post with form action
-- navigate
-
-npx create-react-app day8
-npm install firebase
-npm install @reduxjs/toolkit
-npm install react-redux
-npm install @mui/material @emotion/react @emotion/styled
-npm install antd --save
-npm i redux-persist
-
-Api : https://fakestoreapi.com/docs
-
-
-yello #DEC736
-
-
-
-
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { GoogleAuthProvider, getAuth } from "firebase/auth";
+// import { getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -42,4 +19,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+const auth = getAuth(app)
+const provider =  new GoogleAuthProvider()
+export { auth , provider };
+// const analytics = getAnalytics(app);

@@ -1,0 +1,41 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+.chat{
+    height: 100%;
+    width: 100%;
+    /* background-color: red; */
+    padding: 0px 25px;
+}
+
+.header{
+    height: 75px;
+    width: 100%;
+    /* background-color: aquamarine; */
+    border-bottom: 2px solid #e4e9ed;
+}
+
+.active{
+    display: flex;
+    align-items: center;
+}
+
+.chats{
+    height: calc(100% - 170px);
+    width: 100%;
+    /* background-color: red; */
+    overflow: scroll;
+    margin: 10px 0px;
+}
+
+.msgBox{
+    height: 63px;
+    width: 100%;
+    /* background-color: red; */
+}
+
+.chats::-webkit-scrollbar {
+    display: none;
+}

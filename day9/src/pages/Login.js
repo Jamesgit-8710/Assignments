@@ -53,7 +53,7 @@ function Login() {
               { required: true, message: "Please input your Phone number!" },
             ]}
           >
-            <Input type="number" placeholder="Phone number" style={{ height: 50 }} />
+            <Input type="number" placeholder="Phone number" style={{ height: 50 }} maxLength={10}/>
           </Form.Item>
 
           <Form.Item >
