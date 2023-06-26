@@ -1,9 +1,14 @@
 .tile{
     height: 55px;
     /* background-color: aquamarine; */
-    padding: 15px 0px;
+    padding: 15px 20px;
     border-bottom: 2px solid #d2dce3;
-    margin: 0px 20px;
+    /* margin: 0px 0px; */
+}
+
+.act{
+    background-image: linear-gradient(to right, white , rgba(255, 255, 0, 0));
+    border-left: 4px solid #FF5151;
 }
 
 .inner{

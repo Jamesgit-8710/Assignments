@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import "../styles/chat.css";
 import Child from "./Child";
 import InputEmoji from "react-input-emoji";
+import send from '../assets/message.png'
 
 function Chat() {
-    const [text, setText] = useState("");
+  const [text, setText] = useState("");
 
   function handleOnEnter(text) {
     console.log("enter", text);
@@ -12,7 +13,7 @@ function Chat() {
   return (
     <div className="chat">
       <div className="header">
-        <h1 style={{marginTop: 10}}>Ter Naguyen</h1>
+        <h1 style={{ marginTop: 10 }}>Ter Naguyen</h1>
         <div className="active">
           <div
             style={{
@@ -22,22 +23,22 @@ function Chat() {
               backgroundColor: "#45E171",
             }}
           ></div>
-          <p style={{ fontSize: 12, color: "#AAB8C2" ,marginLeft: 5}}>Active now</p>
+          <p style={{ fontSize: 12, color: "#AAB8C2", marginLeft: 5 }}>Active now</p>
         </div>
       </div>
       <div className="chats">
-        <Child bgColor={"#F1F6F9"} color={"#617481"} align={"left"} />
-        <Child bgColor={"#FF5151"} color={"white"} align={"right"} />
-        
+        <Child bgColor={"#F1F6F9"} color={"#617481"} align={"left"} text={"Dummy text"}/>
+        <Child bgColor={"#FF5151"} color={"white"} align={"right"} text={"Dummy text"} />
       </div>
       <div className="msgBox">
-      <InputEmoji
-      value={text}
-      onChange={setText}
-      cleanOnEnter
-      onEnter={handleOnEnter}
-      placeholder="Type a message"
-    />
+        <InputEmoji
+          value={text}
+          onChange={setText}
+          // cleanOnEnter
+          onEnter={handleOnEnter}
+          placeholder="Your message here..."
+        />
+        <img src={send} alt="send" height={40} style={{ marginLeft: 20 }} />
       </div>
     </div>
   );

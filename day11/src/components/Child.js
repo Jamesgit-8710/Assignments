@@ -1,6 +1,6 @@
 import React from "react";
 
-function Child({bgColor,color,align}) {
+function Child({bgColor,color,align,text}) {
   return (
     <div style={{width:"100%",height:"auto",overflow:"hidden",wordBreak:"break-all"}}>
       <div
@@ -14,7 +14,7 @@ function Child({bgColor,color,align}) {
           fontSize: 15
         }}
       >
-        jfaljjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
+        {text}
       </div>
     </div>
   );
