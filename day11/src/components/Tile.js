@@ -3,14 +3,14 @@ import '../styles/tile.css'
 import Pic from './Pic'
 import man from '../assets/man.png'
 
-function Tile({name , set}) {
-  const [val ,setVal] = useState(0);
+function Tile({ key , id , name , set}) {
+  const [val ,setVal] = useState(-1);
   return (
-    <div className={`tile center ${val ? 'act' : ''}`} onClick={()=>{setVal(1);set(1);}}>
+    <div className={`tile center ${val===key ? 'act' : ''}`} onClick={()=>{setVal(key);set(id);}}>
         <div className='inner center'>
             <Pic img={man}/>
             <div className='innerRight'>
-                <div className='NT center'>
+                <div className='NT center'>    
                     <h4>{name}</h4>
                     <p style={{fontSize: 12,color: "#AAB8C2"}}>12:50 AM</p>
                 </div>

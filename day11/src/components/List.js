@@ -32,7 +32,7 @@ function List({set}) {
       </div>
       <div className="friendList">
         {
-          data.map(item => (<Tile name={item[0].name} set={set}/>))
+          data.map((item,index) => (<Tile key={index} id={item[0].id}  name={item[0].name} set={set}/>))
         }
         {/* <Tile/>
             <Tile/> */}

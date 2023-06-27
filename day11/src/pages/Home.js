@@ -11,6 +11,7 @@ function Home() {
   const set = (e) => {
     setVal(e)
     console.log(e)
+
   }
 
   return (
@@ -20,7 +21,7 @@ function Home() {
             <List set={set}/>
             {
               val?
-              <Chat/>:
+              <Chat id={val}/>:
               <Empty/>
             }
             

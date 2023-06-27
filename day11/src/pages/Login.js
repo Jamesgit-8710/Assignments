@@ -17,13 +17,13 @@ import {
 import { message } from "antd";
 import { useDispatch } from "react-redux";
 import { async } from "@firebase/util";
+import ColumnGroup from "antd/es/table/ColumnGroup";
 
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
-
-  const [data, setData] = useState("");
+  const [id, setId] = useState("")
 
   const info = () => {
     messageApi.info("Try again!");
@@ -33,8 +33,9 @@ function Login() {
 
   const onFinishFailed = (errorInfo) => {};
 
-  const signIn = () => {
-    signInWithPopup(auth, provider)
+  const signIn = async() => {
+
+    await signInWithPopup(auth, provider)
       .then(async (result) => {
         //   const credential = GoogleAuthProvider.credentialFromResult(result);
         //   const token = credential.accessToken;
@@ -54,8 +55,8 @@ function Login() {
             });
           }
           const x = user.uid;
-          setData(x)
-          console.log(x);
+          setId(x)
+          //console.log(x);
            
         } catch (err) {
           alert(err);
@@ -68,6 +69,12 @@ function Login() {
       });
 
   };
+
+  if(id!==""){
+    console.log(id);
+    // dispatch(signIn(id));
+    // call(id)
+  }
 
   
   return (

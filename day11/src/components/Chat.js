@@ -3,16 +3,16 @@ import "../styles/chat.css";
 import Child from "./Child";
 import InputEmoji from "react-input-emoji";
 import img from "../assets/message.png";
-import { Timestamp, addDoc, collection, doc, getDocs, onSnapshot, orderBy, query, serverTimestamp } from "firebase/firestore";
+import { Timestamp, addDoc, collection, doc, getDocs, onSnapshot, orderBy, query, serverTimestamp, where } from "firebase/firestore";
 import { db } from "../services/user.auth";
 
-function Chat() {
+function Chat({id}) {
   const [text, setText] = useState("");
 
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const colRef = query(collection(db, "chatRoom"),orderBy("createdAt","asc"));
+    const colRef = query(collection(db, "chatRoom" , id),orderBy("createdAt","asc"),where());
     //real time update
     onSnapshot(colRef, (snapshot) => {
       setData(snapshot.docs.map((doc) => {
