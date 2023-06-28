@@ -4,9 +4,12 @@ import { Input } from "antd";
 import Tile from "./Tile";
 import { collection, doc, getDocs, onSnapshot, query } from "firebase/firestore";
 import { db } from "../services/user.auth";
+import { useSelector } from "react-redux";
 
 function List({set}) {
   const [data, setData] = useState([]);
+
+  const state = useSelector((state)=> state.users.User)
   
   useEffect(() => {
     const colRef = collection(db, "users");
@@ -32,7 +35,12 @@ function List({set}) {
       </div>
       <div className="friendList">
         {
-          data.map((item,index) => (<Tile key={index} id={item[0].id}  name={item[0].name} set={set}/>))
+          data.map((item,index) =>
+          state!==item[0].id ?
+          (<Tile key={index} id={item[0].id}  name={item[0].name} set={set}/>)
+          :
+          null
+          )
         }
         {/* <Tile/>
             <Tile/> */}

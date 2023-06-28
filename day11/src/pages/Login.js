@@ -18,12 +18,12 @@ import { message } from "antd";
 import { useDispatch } from "react-redux";
 import { async } from "@firebase/util";
 import ColumnGroup from "antd/es/table/ColumnGroup";
+import { addUser } from "../slices/user.slice";
 
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
-  const [id, setId] = useState("")
 
   const info = () => {
     messageApi.info("Try again!");
@@ -33,14 +33,14 @@ function Login() {
 
   const onFinishFailed = (errorInfo) => {};
 
-  const signIn = async() => {
-
+  const signIn = async () => {
     await signInWithPopup(auth, provider)
       .then(async (result) => {
         //   const credential = GoogleAuthProvider.credentialFromResult(result);
         //   const token = credential.accessToken;
 
         const user = result.user;
+        dispatch(addUser(user.uid));
 
         const q = query(collection(db, "users"), where("id", "==", user.uid));
 
@@ -54,10 +54,6 @@ function Login() {
               email: user.email,
             });
           }
-          const x = user.uid;
-          setId(x)
-          //console.log(x);
-           
         } catch (err) {
           alert(err);
         }
@@ -67,16 +63,8 @@ function Login() {
       .catch((error) => {
         console.log(error);
       });
-
   };
 
-  if(id!==""){
-    console.log(id);
-    // dispatch(signIn(id));
-    // call(id)
-  }
-
-  
   return (
     <div className="backGround">
       {contextHolder}

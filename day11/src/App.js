@@ -8,10 +8,10 @@ function App() {
 
   const s = useSelector((state)=>state)
   
-  let element=<Home/>
+  let element=<Login/>
 
-  // if(s.users.data!==null)
-  // element=<Home/>
+  if(s.users.User!==null)
+  element=<Home/>
 
   return (
     <BrowserRouter>

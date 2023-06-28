@@ -19,6 +19,25 @@ Api : https://fakestoreapi.com/docs
 
 yello #DEC736
 
+**deployment:
+
+--for the first time--
+npm install -g firebase-tools
+firebase init
+npm run build
+firebase deploy
+
+--if not working--
+open powershell **run as administater**
+run this command --->   Set-ExecutionPolicy RemoteSigned
+then repeat the below command
+
+--update changes on deployment--
+npm run build
+firebase deploy
+
+
+
 
 
 

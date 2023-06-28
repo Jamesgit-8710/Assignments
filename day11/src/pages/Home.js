@@ -4,14 +4,17 @@ import Nav from '../components/Nav'
 import List from '../components/List'
 import Chat from '../components/Chat'
 import Empty from '../components/Empty'
+import { useSelector } from 'react-redux'
 
 function Home() {
-  const [val, setVal] = useState(0);
+  const [val, setVal] = useState("");
+
+  const state = useSelector((state)=> state)
 
   const set = (e) => {
     setVal(e)
-    console.log(e)
-
+    // console.log(e)
+    
   }
 
   return (
@@ -20,7 +23,7 @@ function Home() {
             <Nav/>
             <List set={set}/>
             {
-              val?
+              val!==""?
               <Chat id={val}/>:
               <Empty/>
             }
