@@ -13,6 +13,7 @@ import {
   query,
   where,
   getDocs,
+  updateDoc,
 } from "firebase/firestore";
 import { message } from "antd";
 import { useDispatch } from "react-redux";
@@ -52,7 +53,21 @@ function Login() {
               id: user.uid,
               name: user.displayName,
               email: user.email,
+              status: true
             });
+          }else{
+            
+            let i = "";
+            querySnapshot.forEach((doc) => {
+              i=doc.id;
+            });
+
+            const Ref = doc(db, "users", i);
+
+            await updateDoc(Ref, {
+              status: true
+            });
+
           }
         } catch (err) {
           alert(err);

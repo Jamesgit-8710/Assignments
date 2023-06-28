@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 import "../styles/chat.css";
 import Child from "./Child";
-import InputEmoji from "react-input-emoji";
+import InputEmoji, { async } from "react-input-emoji";
 import img from "../assets/message.png";
 import {
   Timestamp,
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDocs,
   onSnapshot,
   orderBy,
   query,
   serverTimestamp,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { db } from "../services/user.auth";
@@ -23,25 +25,32 @@ function Chat({ id }) {
 
   const [data, setData] = useState([]);
 
-  const [name, setName] = useState("");
-
   const state = useSelector((state) => state.users.User);
 
   const roomId = [id.id, state].sort();
 
   const room = roomId.join("_");
 
-  console.log("id----->",id)
-  console.log("state------->",state)
-  console.log("room------->",room)
+  const [updt, setUpdt] = useState({})
+
+  // console.log("id----->",id)
+  // console.log("state------->",state)
+  // console.log("room------->",room)
+
+  const setStatus = (e) => {
+    if (e) {
+      setUpdt({ c: "#45E171", t: "online" })
+    } else {
+      setUpdt({ c: "red", t: "offline" })
+    }
+  }
 
   useEffect(() => {
     const colRef = query(
       collection(db, "chatRoom"),
       orderBy("createdAt", "asc")
     );
-    // console.log('----->',id)
-    //real time update
+
     onSnapshot(colRef, (snapshot) => {
       setData(
         snapshot.docs.map((doc) => {
@@ -50,23 +59,34 @@ function Chat({ id }) {
       );
     });
 
-    // setUpdated(
-    //   data.filter((item) => {
-    //     console.log(item[0]);
-    //     if (item[0].id === id) {
-    //       return item;
-    //     }
-    //   })
-    // );
+    const update = () => {
+
+      const q = query(collection(db, "users"), where("id", "==", id.id));
+
+      onSnapshot(q, (snapshot) => {
+        snapshot.docs.map((doc) => {
+          console.log(doc.data().status)
+          if (doc.data().status) {
+            setStatus(true)
+          } else {
+            setStatus(false)
+          }
+        })
+
+      });
+
+
+    }
+
+    update();
+
+
   }, []);
 
-  //console.log(data)
-  // console.log(data)
 
-  function handleOnEnter(text) {
-    console.log("enter", text);
-  }
-  // console.log(state)
+  // function handleOnEnter(text) {
+  //   console.log("enter", text);
+  // }
 
   const send = async () => {
     if (text !== "") {
@@ -74,27 +94,74 @@ function Chat({ id }) {
         text: text,
         roomId: room,
         createdAt: serverTimestamp(),
-        sId: state
+        sId: state,
+        typing: false        
       });
       setText("");
     }
   };
 
+  const set = async (e) => {
+    setText(e)
+
+    // const q = query(collection(db, "chatRoom"), where("roomId", "==", room));
+
+    // const querySnapshot = await getDocs(q);
+
+    // let i = "";
+
+    // querySnapshot.forEach((doc) => {
+    //   i = doc.id;
+    // });
+
+    // if (i !== "") {
+    //   const Ref = doc(db, "chatRoom", i);
+
+    //   await updateDoc(Ref, {
+    //     typing: true
+    //   });
+
+    //   const timerId = setTimeout(async() => {
+    //     await updateDoc(Ref, {
+    //       typing: false
+    //     });
+    //   }, 1000);
+
+    //   timerId();
+    // }
+
+  }
+
+  const clear = async() => {
+    const q = query(collection(db, "chatRoom"), where("roomId", "==", room));
+
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach(async(d) => {
+      await deleteDoc(doc(db, "chatRoom", d.id));   
+    });
+  }
+
   return (
     <div className="chat">
       <div className="header">
-        <h1 style={{ marginTop: 10 }}>{id.n}</h1>
+        <h1 style={{ marginTop: 10 ,display: "flex",justifyContent: "space-between"}}>{id.n}<p onClick={clear} style={{ fontSize: "1rem",cursor: "pointer", color: "red", marginLeft: 5 }}>
+            clear chat
+          </p></h1>
         <div className="active">
           <div
             style={{
               height: 7,
               width: 7,
               borderRadius: "50%",
-              backgroundColor: "#45E171",
+              backgroundColor: updt.c,
             }}
           ></div>
           <p style={{ fontSize: 12, color: "#AAB8C2", marginLeft: 5 }}>
-            Active now
+            {updt.t}
+          </p>
+          <p style={{ fontSize: 12, color: "#AAB8C2", marginLeft: 5 }}>
+            typing...
           </p>
         </div>
       </div>
@@ -102,35 +169,28 @@ function Chat({ id }) {
         {/* <Child bgColor={"#F1F6F9"} color={"#617481"} align={"left"} text={"Dummy text"}/> */}
         {data.map((item) =>
           item[0].roomId === room ? (
-            state===item[0].sId?
-            <Child
-              bgColor={"#FF5151"}
-              color={"white"}
-              align={"right"}
-              text={item[0].text}
-            />:
-            <Child
-              bgColor={"#F1F6F9"}
-              color={"#617481"}
-              align={"left"}
-              text={item[0].text}
-            />
+            state === item[0].sId ?
+              <Child
+                bgColor={"#FF5151"}
+                color={"white"}
+                align={"right"}
+                text={item[0].text}
+              /> :
+              <Child
+                bgColor={"#F1F6F9"}
+                color={"#617481"}
+                align={"left"}
+                text={item[0].text}
+              />
           ) : null
         )}
-        {/* <Child bgColor={"#FF5151"} color={"white"} align={"right"} text={"Dummy text"} /> */}
-        {/* <Child
-            bgColor={"#FF5151"}
-            color={"white"}
-            align={"right"}
-            text={item[0].text}
-          /> */}
       </div>
       <div className="msgBox">
         <InputEmoji
           value={text}
-          onChange={setText}
+          onChange={set}
           // cleanOnEnter
-          onEnter={handleOnEnter}
+          onEnter={send}
           placeholder="Your message here..."
         />
         <img
