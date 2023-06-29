@@ -6,7 +6,7 @@ import man from '../assets/man.png'
 function Tile({ key , id , name , set}) {
   const [val ,setVal] = useState(-1);
   return (
-    <div className={`tile center ${val===key ? 'act' : ''}`} onClick={()=>{setVal(key);set({id:id , n:name});}}>
+    <div className={`tile center ${val===key ? 'act' : ''}`} onClick={(e)=>{e.preventDefault(); setVal(key);set({id:id , n:name});}}>
         <div className='inner center'>
             <Pic img={man}/>
             <div className='innerRight'>

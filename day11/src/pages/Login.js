@@ -53,7 +53,9 @@ function Login() {
               id: user.uid,
               name: user.displayName,
               email: user.email,
-              status: true
+              status: true,
+              typing: false,
+              typingFor: ""
             });
           }else{
             
