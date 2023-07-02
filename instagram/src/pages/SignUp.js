@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/login.css";
 import { Button, Form, Input } from "antd";
 import google from "../assets/google.png";
@@ -8,13 +8,17 @@ import coloredText from "../assets/coloredText.webp";
 import { useDispatch } from "react-redux";
 import { addUser } from "../slices/user.slice";
 import { useNavigate } from "react-router-dom";
-import { auth, db } from "../firebase/user.auth";
+import { auth, db, storage } from "../firebase/user.auth";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { message } from 'antd';
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes, uploadString } from "firebase/storage";
 
 const SignUp = () => {
   const navigate = useNavigate();
+
+  const [proImg, setProImg] = useState(user);
+  const [file, setFile] = useState("");
 
   const logIn = () => {
     navigate("/");
@@ -26,21 +30,44 @@ const SignUp = () => {
     messageApi.info(e);
   };
 
-  const onFinish = async(e) => {
+  // useEffect(() => {
+  //   const time = Date();
+  //   console.log(time);
+  // },[])
+
+  const onFinish = async (e) => {
     const email = e.email;
     const pass = e.password;
     const name = e.username;
 
     await createUserWithEmailAndPassword(auth, email, pass)
-      .then( async (userCredential) => {
+      .then(async (userCredential) => {
         // Signed in
         const user = userCredential.user;
+
+        const imgName = user.uid + Date().toString()
+        
+        if(file!==""){
+          const storageRef = ref(storage, 'images/' + imgName);
+          
+          await uploadBytes(storageRef, file).then((snapshot) => {
+            console.log('Uploaded a blob or file!');
+          });
+        }
+
+        let imgUrl = "";
+
+        await getDownloadURL(ref(storage, 'images/' + imgName)).then((url) => {
+          imgUrl = url
+        }).catch(() => {
+          imgUrl = ""
+        })
 
         await addDoc(collection(db, "users"), {
           id: user.uid,
           uName: name,
           email: user.email,
-          image: "",
+          image: imgUrl
         });
 
         navigate("/")
@@ -49,17 +76,37 @@ const SignUp = () => {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        if(errorCode==="auth/email-already-in-use")
-        info("user already exist")
-        else if(errorCode==="auth/invalid-email")
-        info("enter a valid email")
-        else if(errorCode==="auth/weak-password")
-        info("password should have at least 6 characters")
+        if (errorCode === "auth/email-already-in-use")
+          info("user already exist")
+        else if (errorCode === "auth/invalid-email")
+          info("enter a valid email")
+        else if (errorCode === "auth/weak-password")
+          info("password should have at least 6 characters")
         else
-        info("invalid")
+          info(errorCode)
         // ..
       });
   };
+
+  const img = (event) => {
+    if (event.target.value !== "") {
+
+      const f = event.target.files[0];
+
+      setFile(f)
+
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        const base64Image = e.target.result;
+
+        setProImg(base64Image);
+      };
+
+      reader.readAsDataURL(f);
+
+    }
+  }
 
   return (
     <div className="backGround center">
@@ -82,7 +129,7 @@ const SignUp = () => {
           }}
         >
           <img
-            src={user}
+            src={proImg}
             alt="instagram"
             style={{ height: "100%", width: "100%" }}
           />
@@ -104,6 +151,7 @@ const SignUp = () => {
               type="file"
               placeholder="img"
               style={{ height: 40, width: 40, opacity: "0" }}
+              onChange={img}
             ></input>
           </div>
         </div>
