@@ -37,6 +37,9 @@ npm run build
 firebase deploy
 
 
+https://insta-e6c58.web.app/
+
+
 
 
 

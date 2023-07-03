@@ -71,7 +71,7 @@ const Login = () => {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log("chal gya")
+        // console.log("chal gya")
         dispatch(addUser(user.uid))
         // ...
       })

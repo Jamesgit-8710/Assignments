@@ -9,7 +9,7 @@ import { db, storage } from '../firebase/user.auth'
 import { FieldValue, addDoc, arrayUnion, collection, doc, getDocs, onSnapshot, query, serverTimestamp, updateDoc, where } from 'firebase/firestore'
 import { useSelector } from "react-redux";
 
-const Post = ({ item, like, id, display }) => {
+const Post = ({ item, like, id, display, comm }) => {
 
     const state = useSelector((state) => state.users.User)
 
@@ -32,6 +32,10 @@ const Post = ({ item, like, id, display }) => {
         //     setPost(snapshot.docs.map((doc) => {
         //         return [doc.data()]
         //     }))
+        // });
+
+        // comm.array?.forEach(element => {
+        //     setCount(count+1)
         // });
 
     }, [])
@@ -57,7 +61,7 @@ const Post = ({ item, like, id, display }) => {
         <div className='post'>
             <div style={{ height: 70, width: "100%" }} className='center'>
                 <div style={{ height: "45px", width: "100%", backgroundColor: "white", display: "flex" }}>
-                    <img src={data[0][0].image} style={{ height: "100%", width: "48px", borderRadius: "50%" }} />
+                    <img src={data[0][0].image} style={{ height: "100%", width: "45px", borderRadius: "50%" }} />
                     <h3 style={{ margin: "5px 0px 0px 10px" }}>{data[0][0].uName}</h3>
                 </div>
             </div>
@@ -68,8 +72,8 @@ const Post = ({ item, like, id, display }) => {
                 <div style={{ height: "30px", width: "100%", backgroundColor: "white", display: "flex" }}>
                     <img src={like ? red : heart} style={{ height: "70%", marginTop: 4, cursor: "pointer" }} onClick={liked} />
                     <h5 style={{ margin: "5px 0px 0px 5px" }}>{item.likeList.length} <span>Likes</span></h5>
-                    <img src={comment} style={{ height: "70%", marginTop: 4, marginLeft: 40, cursor: "pointer" }} onClick={display}/>
-                    <h5 style={{ margin: "5px 0px 0px 5px" }}>{item.commentList.length} <span>Comments</span></h5>
+                    <img src={comment} style={{ height: "70%", marginTop: 4, marginLeft: 40, cursor: "pointer" }} onClick={() => {display({i: item, id: id})}}/>
+                    <h5 style={{ margin: "5px 0px 0px 5px" }}>{item.comment} <span>Comments</span></h5>
                 </div>
             </div>
             <div style={{ maxHeight: 68, width: "100%", fontSize: "1rem", overflow: "hidden" }}>
