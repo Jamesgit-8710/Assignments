@@ -5,7 +5,7 @@ import axios from 'axios'
 const Login = () => {
   const onFinish = async(values) => {
     console.log(values.username);
-    const res = await axios.post('http://localhost:8000/login',{username: values.username, password: values.password});
+    const res = await axios.get('http://localhost:8000/whether',{username: values.username, password: values.password});
     // alert(res.data);
     if(res.data!==""){
         alert("logged in!");
@@ -18,7 +18,7 @@ const Login = () => {
     console.log("Failed:", errorInfo);
   };
   return (
-    <div style={{ display: "flex", justifyContent: "center", marginTop: 300 }}>
+    <div style={{ display: "flex", justifyContent: "center"}}>
       <Form
         name="basic"
         labelCol={{ span: 8 }}
