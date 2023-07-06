@@ -46,3 +46,13 @@ RoL5SGKyU4L3U6Zx
 mongodb+srv://james1131:RoL5SGKyU4L3U6Zx@cluster0.ko8ydnw.mongodb.net/
 
 
+npm i express
+npm init -y
+npm i mongoose
+npm i cors
+npm i dotenv
+npm i nodemon
+
+npm run james
+
+
