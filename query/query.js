@@ -83,7 +83,7 @@ app.get("/fetch", async (req, res) => {
 
   a.find({
     location: {
-      $near: {$geometry: {type: 'Point',coordinates:[76.74404943674983, 30.68066949115736]}},
+      $geonear: {$geometry: {type: 'Point',coordinates:[76.74404943674983, 30.68066949115736]}},
     },
   }).then((result) => {
     console.log(result);
