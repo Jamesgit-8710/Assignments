@@ -4,10 +4,11 @@ import google from '../assets/google.png'
 import { Button, Form, Input } from 'antd';
 import validator from 'validator'
 import { message } from 'antd';
-import { auth } from '../services/firbase.auth';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth, provider } from '../services/firbase.auth';
+import { createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import axios from 'axios';
 
-const Signup = ({ set }) => {
+const Signup = ({ set , val }) => {
 
     const key = 'updatable';
 
@@ -22,15 +23,16 @@ const Signup = ({ set }) => {
         });
 
         createUserWithEmailAndPassword(auth, user, pass)
-            .then((userCredential) => {
+            .then(async(userCredential) => {
                 // const user = userCredential.user;
-                console.log("login ho gyyyyaaaa...")
                 messageApi.open({
                     key,
                     type: 'success',
                     content: 'Successful',
                     duration: 2,
                 });
+
+                const res = await axios.post('http://localhost:8000/user',{user,pass,val})
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -58,7 +60,31 @@ const Signup = ({ set }) => {
     }
 
     const signupWithPhone = async (user, pass) => {
-        console.log(user, pass);
+        messageApi.open({
+            key,
+            type: 'loading',
+            content: 'Loading...',
+        });
+
+        const res = await axios.post('http://localhost:8000/exist',{user})
+
+        if(res.data){
+            messageApi.open({
+                key,
+                type: 'warning',
+                content: 'User already exist!',
+                duration: 2,
+            });
+        }else{
+            const res2 = await axios.post('http://localhost:8000/user',{user,pass,val})
+            messageApi.open({
+                key,
+                type: 'success',
+                content: 'Successful',
+                duration: 2,
+            });
+        }
+
     }
 
     const onFinish = (values) => {
@@ -96,6 +122,33 @@ const Signup = ({ set }) => {
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
+
+    // const logInGoogle = async() => {
+    //     await signInWithPopup(auth, provider)
+    //   .then(async (result) => {
+    //     const user = result.user;
+    //     const res = await axios.post('http://localhost:8000/exist',{user: user.email})
+
+    //     if(res.data){
+    //         messageApi.open({
+    //             key,
+    //             type: 'warning',
+    //             content: 'User already exist!',
+    //             duration: 2,
+    //         });
+    //     }else{
+    //         const res2 = await axios.post('http://localhost:8000/user',{})
+    //         messageApi.open({
+    //             key,
+    //             type: 'success',
+    //             content: 'Successful',
+    //             duration: 2,
+    //         });
+    //     }
+    //   }).catch((error) => {
+    //     console.log(error);
+    //   });
+    // }
 
     return (
         <div className='login'>

@@ -39,7 +39,7 @@ const LoginSignup = () => {
                 <div className='innerDiv center'>
                     {
                         change ?
-                            <Signup set={setChange} />
+                            <Signup set={setChange} val={value}/>
                             :
                             <Login set={setVis} />
                     }
@@ -70,7 +70,7 @@ const LoginSignup = () => {
 
                     </Radio.Group>
                     <Button type="primary" size={size} style={{ float: "right", marginTop: "20%", padding: "0 30px" }} onClick={() => {
-                        if (value !== "") { setChange(1); setVis("none"); setValue(""); } else {
+                        if (value !== "") { setChange(1); setVis("none"); } else {
                             messageApi.open({
                                 key,
                                 type: 'warning',

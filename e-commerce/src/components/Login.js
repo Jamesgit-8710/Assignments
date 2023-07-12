@@ -2,12 +2,38 @@ import React from 'react'
 import '../styles/login.css'
 import google from '../assets/google.png'
 import { Button, Form, Input } from 'antd';
+import axios from 'axios';
+import { message } from 'antd';
 // import validator from 'validator'
 
 const Login = ({ set }) => {
-    const onFinish = (values) => {
-        const x = values.username;
-        console.log('Success:', isNaN(values.username), x.length);
+
+    const key = 'updatable';
+
+    const [messageApi, contextHolder] = message.useMessage();
+
+    const onFinish = async(values) => {
+        // const x = values.username;
+        // console.log('Success:', isNaN(values.username), x.length);
+
+        const res = await axios.post('http://localhost:8000/check',{user: values.username,pass: values.password})
+
+        if(res.data){
+            messageApi.open({
+                key,
+                type: 'success',
+                content: 'Welcome!',
+                duration: 2,
+            });
+        }else{
+            // const res2 = await axios.post('http://localhost:8000/user',{user,pass,val})
+            messageApi.open({
+                key,
+                type: 'warning',
+                content: 'User not found!',
+                duration: 2,
+            });
+        }
 
         // validator.isEmail(values.username)
     };
@@ -18,6 +44,7 @@ const Login = ({ set }) => {
 
     return (
         <div className='login'>
+            {contextHolder}
             <Form
                 name="basic"
                 initialValues={{ remember: true }}
