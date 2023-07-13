@@ -4,6 +4,8 @@ import google from '../assets/google.png'
 import { Button, Form, Input } from 'antd';
 import axios from 'axios';
 import { message } from 'antd';
+import { signInWithPopup } from 'firebase/auth';
+import { auth, provider } from '../services/firbase.auth';
 // import validator from 'validator'
 
 const Login = ({ set }) => {
@@ -19,6 +21,7 @@ const Login = ({ set }) => {
         const res = await axios.post('http://localhost:8000/check',{user: values.username,pass: values.password})
 
         if(res.data){
+            localStorage.setItem('id', res.data)
             messageApi.open({
                 key,
                 type: 'success',
@@ -41,6 +44,33 @@ const Login = ({ set }) => {
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
     };
+
+    const logInGoogle = async() => {
+        await signInWithPopup(auth, provider)
+      .then(async (result) => {
+        const user = result.user;
+        const res = await axios.post('http://localhost:8000/exist',{user: user.email})
+
+        if(res.data){
+            localStorage.setItem('id', res.data)
+            messageApi.open({
+                key,
+                type: 'success',
+                content: 'Welcome!',
+                duration: 2,
+            });
+        }else{
+            messageApi.open({
+                key,
+                type: 'warning',
+                content: 'User not found!',
+                duration: 2,
+            });
+        }
+      }).catch((error) => {
+        console.log(error);
+      });
+    }
 
     return (
         <div className='login'>
@@ -83,7 +113,7 @@ const Login = ({ set }) => {
                 </p>
                 <h3
                     className="center"
-                    // onClick={logInGoogle}
+                    onClick={logInGoogle}
                     style={{ marginTop: 45, cursor: "pointer", marginBottom: 45, fontSize: 19 }}
                 >
                     <img

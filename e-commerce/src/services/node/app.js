@@ -22,6 +22,17 @@ const userSchema = new mongoose.Schema({
 
 const users = mongoose.model("users", userSchema);
 
+const prodSchema = new mongoose.Schema({
+  productName: String,
+  price: Number,
+  qty: Number,
+  cat: String,
+  des: String,
+  uploadedBy: String
+});
+
+const product = mongoose.model("product", prodSchema);
+
 app.post("/user", async (req, res) => {
   const user = new users();
 
@@ -35,7 +46,7 @@ app.post("/user", async (req, res) => {
 });
 
 app.post("/exist", async (req, res) => {
-    let i = 0;
+    let i = "";
 
     await users.find().then((result) => {
       // console.log("----------------> ", result);
@@ -43,14 +54,14 @@ app.post("/exist", async (req, res) => {
         if (
           element.username == req.body.user
         ) {
-          i = 1;
+          i = element._id;
           return;
         }
       });
     });
   
-    if (i) {
-      res.send(true);
+    if (i!="") {
+      res.send(i);
     } else {
       res.send(false);
     }
@@ -59,7 +70,7 @@ app.post("/exist", async (req, res) => {
 });
 
 app.post("/check", async (req, res) => {
-    let i = 0;
+    let i = "";
 
     await users.find().then((result) => {
       // console.log("----------------> ", result);
@@ -68,17 +79,43 @@ app.post("/check", async (req, res) => {
           element.username == req.body.user &&
           element.password == req.body.pass
         ) {
-          i = 1;
+          i = element._id;
           return;
         }
       });
     });
   
-    if (i) {
-      res.send(true);
+    if (i!="") {
+      res.send(i);
     } else {
       res.send(false);
     }
+
+//   res.status(200).send(true);
+});
+
+app.post("/addProduct", async (req, res) => {
+  const prod = new product();
+  
+  prod.productName=req.body.name;
+  prod.price=req.body.price;
+  prod.qty=req.body.qty;
+  prod.cat=req.body.cat;
+  prod.des=req.body.des;
+  prod.uploadedBy=req.body.uploadedBy
+
+  await prod.save();
+
+  res.status(200).send(true);
+
+//   res.status(200).send(true);
+});
+
+app.post("/getProduct", async (req, res) => {
+
+  await product.find({}).then((result) => {
+    res.status(200).send(result)
+  });
 
 //   res.status(200).send(true);
 });

@@ -123,32 +123,33 @@ const Signup = ({ set , val }) => {
         console.log('Failed:', errorInfo);
     };
 
-    // const logInGoogle = async() => {
-    //     await signInWithPopup(auth, provider)
-    //   .then(async (result) => {
-    //     const user = result.user;
-    //     const res = await axios.post('http://localhost:8000/exist',{user: user.email})
+    const logInGoogle = async() => {
+        await signInWithPopup(auth, provider)
+      .then(async (result) => {
+        const user = result.user;
+        const res = await axios.post('http://localhost:8000/exist',{user: user.email})
 
-    //     if(res.data){
-    //         messageApi.open({
-    //             key,
-    //             type: 'warning',
-    //             content: 'User already exist!',
-    //             duration: 2,
-    //         });
-    //     }else{
-    //         const res2 = await axios.post('http://localhost:8000/user',{})
-    //         messageApi.open({
-    //             key,
-    //             type: 'success',
-    //             content: 'Successful',
-    //             duration: 2,
-    //         });
-    //     }
-    //   }).catch((error) => {
-    //     console.log(error);
-    //   });
-    // }
+        if(res.data){
+            messageApi.open({
+                key,
+                type: 'warning',
+                content: 'User already exist!',
+                duration: 2,
+            });
+        }else{
+            console.log(val)
+            const res2 = await axios.post('http://localhost:8000/user',{user: user.email, pass: "", val: val})
+            messageApi.open({
+                key,
+                type: 'success',
+                content: 'Successful',
+                duration: 2,
+            });
+        }
+      }).catch((error) => {
+        console.log(error);
+      });
+    }
 
     return (
         <div className='login'>
@@ -191,7 +192,7 @@ const Signup = ({ set , val }) => {
                 </p>
                 <h3
                     className="center"
-                    // onClick={logInGoogle}
+                    onClick={logInGoogle}
                     style={{ marginTop: 45, cursor: "pointer", marginBottom: 45, fontSize: 19 }}
                 >
                     <img

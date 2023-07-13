@@ -11,11 +11,16 @@ import t1 from "../assets/t1.jpg";
 import t2 from "../assets/t2.jpg";
 import t3 from "../assets/t3.jpg";
 import t4 from "../assets/t4.jpg";
-import box from '../assets/box.png';
-import logout from '../assets/logout.png'
-import vendor from '../assets/cashier.png'
+import box from "../assets/box.png";
+import logout from "../assets/logout.png";
+import vendor from "../assets/cashier.png";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+
+  const navigate = useNavigate()
+  const [val, setVal] = useState(0);
+
   const [vis, setVis] = useState("none");
 
   const onClick = ({ key }) => {
@@ -122,7 +127,6 @@ const Home = () => {
             onMouseEnter={() => {
               setVis("block");
             }}
-            
             onMouseLeave={() => {
               setVis("none");
             }}
@@ -200,7 +204,6 @@ const Home = () => {
       </div>
       <div
         style={{
-          
           width: 150,
           backgroundColor: "white",
           display: vis,
@@ -210,32 +213,36 @@ const Home = () => {
           borderRadius: 5,
           boxShadow:
             "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-            fontSize: 14,
-            padding: 10
+          fontSize: 14,
+          padding: 10,
         }}
         onMouseEnter={() => {
           setVis("block");
         }}
-        
         onMouseLeave={() => {
           setVis("none");
         }}
       >
-        <div style={{display: "flex", cursor: "pointer"}}>
-          <img src={user} height={16}/>
-          <p style={{marginLeft: 10}}>My Profile</p>
+        <div style={{ display: "flex", cursor: "pointer" }}>
+          <img src={user} height={16} />
+          <p style={{ marginLeft: 10 }}>My Profile</p>
         </div>
-        <div style={{display: "flex",marginTop: 15, cursor: "pointer"}}>
-          <img src={box} height={16}/>
-          <p style={{marginLeft: 10}}>Orders</p>
+        <div style={{ display: "flex", marginTop: 15, cursor: "pointer" }}>
+          <img src={box} height={16} />
+          <p style={{ marginLeft: 10 }}>Orders</p>
         </div>
-        <div style={{display: "flex",marginTop: 15, cursor: "pointer"}}>
-          <img src={vendor} height={20}/>
-          <p style={{marginLeft: 10}}>Vendor</p>
+        <div
+          style={{ display: "flex", marginTop: 15, cursor: "pointer" }}
+          onClick={() => {
+            navigate('/vendor')
+          }}
+        >
+          <img src={vendor} height={20} />
+          <p style={{ marginLeft: 10 }}>Vendor</p>
         </div>
-        <div style={{display: "flex",marginTop: 15, cursor: "pointer"}}>
-          <img src={logout} height={18}/>
-          <p style={{marginLeft: 10}}>Logout</p>
+        <div style={{ display: "flex", marginTop: 15, cursor: "pointer" }}>
+          <img src={logout} height={18} />
+          <p style={{ marginLeft: 10 }}>Logout</p>
         </div>
       </div>
     </div>
