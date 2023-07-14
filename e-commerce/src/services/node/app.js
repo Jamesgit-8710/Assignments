@@ -28,7 +28,8 @@ const prodSchema = new mongoose.Schema({
   qty: Number,
   cat: String,
   des: String,
-  uploadedBy: String
+  uploadedBy: String,
+  status: String
 });
 
 const product = mongoose.model("product", prodSchema);
@@ -102,7 +103,8 @@ app.post("/addProduct", async (req, res) => {
   prod.qty=req.body.qty;
   prod.cat=req.body.cat;
   prod.des=req.body.des;
-  prod.uploadedBy=req.body.uploadedBy
+  prod.uploadedBy=req.body.uploadedBy;
+  prod.status=req.body.status
 
   await prod.save();
 
@@ -118,6 +120,35 @@ app.post("/getProduct", async (req, res) => {
   });
 
 //   res.status(200).send(true);
+});
+
+app.post("/delete", async (req, res) => {
+
+  // console.log(req.body.id);
+
+  await product.deleteOne({_id: req.body.id}).then((result) => {
+    console.log("chal gya")
+  });
+
+//   res.status(200).send(true);
+});
+
+app.post("/stat", async (req, res) => {
+
+  await users.findOne({_id: req.body.id}).then((result) => {
+    res.status(200).send(result.prof);
+  });
+
+//   res.status(200).send(true);
+});
+
+app.post("/update", async (req, res) => {
+
+  console.log(req.body)
+
+  await product.updateOne({_id: req.body.id},{$set: req.body.data})
+
+  res.status(200).send(true);
 });
 
 app.listen(8000, () => {

@@ -5,13 +5,15 @@ import Vendor from "./pages/Vendor";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const App = () => {
-  let element = <LoginSignup />;
+  const [element, setElement] = useState(<LoginSignup />);
 
-  const x = localStorage.getItem("id");
+  useEffect(() => {
+    const x = localStorage.getItem("id");
 
-  if(x!==null){
-    element = <Home/>;
-  }
+    if (x !== null) {
+      setElement(<Home />)
+    }
+  },[]);
 
   return (
     // <LoginSignup/>

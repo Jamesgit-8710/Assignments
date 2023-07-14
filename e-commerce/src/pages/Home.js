@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/home.css";
 import logo from "../assets/shopify.png";
 import { Input } from "antd";
@@ -15,13 +15,19 @@ import box from "../assets/box.png";
 import logout from "../assets/logout.png";
 import vendor from "../assets/cashier.png";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Product from "../components/Product";
 
 const Home = () => {
 
-  const navigate = useNavigate()
+  const id = localStorage.getItem("id");
+
+  const navigate = useNavigate();
   const [val, setVal] = useState(0);
 
   const [vis, setVis] = useState("none");
+  const [data, setData] = useState([]);
+  const [stat, setStat] = useState("")
 
   const onClick = ({ key }) => {
     message.info(`Click on item ${key}`);
@@ -41,6 +47,18 @@ const Home = () => {
       key: "3",
     },
   ];
+
+  useEffect(() => {
+    const getData = async () => {
+      const res = await axios.post("http://localhost:8000/getProduct");
+      setData(res.data);
+      // console.log(res.data);
+      const res2 = await axios.post("http://localhost:8000/stat", { id: id });
+      setStat(res2.data);
+    };
+
+    getData();
+  }, []);
 
   return (
     <div className="homeBackground">
@@ -150,7 +168,8 @@ const Home = () => {
           </p>
         </div>
       </div>
-      <div>
+
+      <div style={{ width: "100vw", height: "80vh" }}>
         <Carousel autoplay>
           <div>
             <div
@@ -201,6 +220,16 @@ const Home = () => {
             ></div>
           </div>
         </Carousel>
+        {/* <div style={{height: 500, backgroundColor: "red"}}></div> */}
+      </div>
+
+      <div style={{ width: "calc(100vw - 200px)", backgroundColor: "white", padding: "50px 100px"}}>
+        <h1 style={{ marginBottom: 40, marginLeft: 15 }}>Products</h1>
+        <div style={{display: "flex", flexWrap: "wrap"}}>
+          {data.map((i) => {
+            if (i.status === "p" && i.uploadedBy!==id) return <Product item={i} show={true} />;
+          })}
+        </div>
       </div>
       <div
         style={{
@@ -232,15 +261,15 @@ const Home = () => {
           <p style={{ marginLeft: 10 }}>Orders</p>
         </div>
         <div
-          style={{ display: "flex", marginTop: 15, cursor: "pointer" }}
+          style={{ display: stat==='v' ? "flex" : "none", marginTop: 15, cursor: "pointer" }}
           onClick={() => {
-            navigate('/vendor')
+            navigate("/vendor");
           }}
         >
           <img src={vendor} height={20} />
           <p style={{ marginLeft: 10 }}>Vendor</p>
         </div>
-        <div style={{ display: "flex", marginTop: 15, cursor: "pointer" }}>
+        <div style={{ display: "flex", marginTop: 15, cursor: "pointer" }} onClick={() => { localStorage.removeItem('id')}}>
           <img src={logout} height={18} />
           <p style={{ marginLeft: 10 }}>Logout</p>
         </div>

@@ -17,7 +17,10 @@ const getBase64 = (file) =>
   });
 
 const Vendor = () => {
+  const [loading, setLoading] = useState(false);
+
   const id = localStorage.getItem("id");
+
   const [messageApi, contextHolder] = message.useMessage();
 
   const key = "updatable";
@@ -29,15 +32,16 @@ const Vendor = () => {
   const [qty, setQty] = useState("");
   const [des, setDes] = useState("");
   const [cat, setCat] = useState("");
-  const [data, setData] = useState([])
+  const [data, setData] = useState([]);
 
   const { TextArea } = Input;
 
   const [val, setVal] = useState("Published");
+  const [val2, setVal2] = useState("p");
 
   const onClick = ({ key }) => {
-    if (key === "1") setVal("Published");
-    else if (key === "2") setVal("Draft");
+    if (key === "1"){ setVal("Published"); setVal2('p')}
+    else if (key === "2"){ setVal("Draft"); setVal2('d')}
   };
 
   const items = [
@@ -102,7 +106,8 @@ const Vendor = () => {
         qty: qty,
         des: des,
         cat: cat,
-        uploadedBy: id
+        uploadedBy: id,
+        status: "p",
       });
       messageApi.open({
         key,
@@ -128,7 +133,32 @@ const Vendor = () => {
   };
 
   const handleCancel = () => {
-    console.log("Clicked cancel button");
+    if (name !== "" && price !== "" && qty !== "" && des !== "" && cat !== "") {
+      const res = axios.post("http://localhost:8000/addProduct", {
+        name: name,
+        price: price,
+        qty: qty,
+        des: des,
+        cat: cat,
+        uploadedBy: id,
+        status: "d",
+      });
+      messageApi.open({
+        key,
+        type: "success",
+        content: "Uploaded!",
+        duration: 2,
+      });
+      setOpen(false);
+    } else {
+      messageApi.open({
+        key,
+        type: "warning",
+        content: "feilds are empty!",
+        duration: 2,
+      });
+    }
+
     setOpen(false);
   };
 
@@ -137,15 +167,13 @@ const Vendor = () => {
   };
 
   useEffect(() => {
-    const getData = async() => {
+    const getData = async () => {
       const res = await axios.post("http://localhost:8000/getProduct");
-      setData(res.data)
-      // console.log(res.data);
-    }
+      setData(res.data);
+    };
 
     getData();
-
-  },[])
+  }, []);
 
   return (
     <div className="vendorBackground">
@@ -203,22 +231,38 @@ const Vendor = () => {
           </Button>
         </div>
       </div>
-      <div style={{height: "calc(100vh - 80px)",display: "flex"}}>
-        {
-          data.map((i) => {
-            if(i.uploadedBy===id)
-
-            return (<Product item={i}/>)
-          })
-        }
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          backgroundColor: "rgb(241, 243, 245)",
+        }}
+      >
+        {data.map((i,index) => {
+          if (i.uploadedBy === id && i.status === val2)
+            return <Product item={i} show={false}/>;
+        })}
       </div>
       <Modal
         title="Add Product"
         open={open}
-        onOk={handleOk}
+        // onOk={handleOk}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
         style={{ top: "10vh" }}
+        footer={[
+          <Button key="back" onClick={handleCancel}>
+            Save as Draft
+          </Button>,
+          <Button
+            key="submit"
+            type="primary"
+            loading={loading}
+            onClick={handleOk}
+          >
+            Add item
+          </Button>,
+        ]}
       >
         <Form onFinish={call}>
           <Form.Item
@@ -228,6 +272,7 @@ const Vendor = () => {
             <Input
               placeholder="Product name"
               style={{ marginTop: 20 }}
+              value={name}
               onChange={(e) => setName(e.target.value)}
             />
           </Form.Item>
@@ -304,6 +349,7 @@ const Vendor = () => {
           </Form.Item>
         </Form>
       </Modal>
+
     </div>
   );
 };
