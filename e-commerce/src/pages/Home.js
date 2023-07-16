@@ -17,10 +17,16 @@ import vendor from "../assets/cashier.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Product from "../components/Product";
+import Profile from "../components/Profile";
+import BestSeller from "../components/BestSeller";
+import Cart from "../components/Cart";
+import CosOrders from "../components/CosOrders";
 
 const Home = () => {
 
   const id = localStorage.getItem("id");
+
+  const [navigation, setNavigation] = useState(0)
 
   const navigate = useNavigate();
   const [val, setVal] = useState(0);
@@ -28,6 +34,7 @@ const Home = () => {
   const [vis, setVis] = useState("none");
   const [data, setData] = useState([]);
   const [stat, setStat] = useState("")
+  const [userData, setUserData] = useState({});
 
   const onClick = ({ key }) => {
     message.info(`Click on item ${key}`);
@@ -55,6 +62,9 @@ const Home = () => {
       // console.log(res.data);
       const res2 = await axios.post("http://localhost:8000/stat", { id: id });
       setStat(res2.data);
+
+      const res3 = await axios.post('http://localhost:8000/getUser', { id: id });
+      setUserData(res3.data);
     };
 
     getData();
@@ -80,6 +90,20 @@ const Home = () => {
           />
         </div>
         <div style={{ display: "flex" }}>
+          <p
+            style={{
+              marginRight: 50,
+              fontSize: 15,
+              fontWeight: 500,
+              marginTop: 3,
+              marginLeft: 5,
+              cursor: "pointer",
+            }}
+
+            onClick={() => { setNavigation(0) }}
+          >
+            Home
+          </p>
           <Dropdown
             menu={{
               items,
@@ -109,6 +133,8 @@ const Home = () => {
               marginLeft: 5,
               cursor: "pointer",
             }}
+
+            onClick={() => { setNavigation(1) }}
           >
             Best sellers
           </p>
@@ -121,6 +147,7 @@ const Home = () => {
               borderRadius: 7,
               cursor: "pointer",
             }}
+            onClick={() => { setNavigation(2) }}
           ></div>
           <p
             style={{
@@ -131,6 +158,8 @@ const Home = () => {
               marginLeft: 5,
               cursor: "pointer",
             }}
+
+            onClick={() => { setNavigation(2) }}
           >
             Cart
           </p>
@@ -169,68 +198,95 @@ const Home = () => {
         </div>
       </div>
 
-      <div style={{ width: "100vw", height: "80vh" }}>
-        <Carousel autoplay>
-          <div>
-            <div
-              style={{
-                height: "80vh",
-                backgroundImage: `url(${t1})`,
-                backgroundSize: "contain",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center",
-                width: "100%",
-              }}
-            ></div>
-          </div>
-          <div>
-            <div
-              style={{
-                height: "80vh",
-                backgroundImage: `url(${t2})`,
-                backgroundSize: "contain",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center",
-                width: "100%",
-              }}
-            ></div>
-          </div>
-          <div>
-            <div
-              style={{
-                height: "80vh",
-                backgroundImage: `url(${t3})`,
-                backgroundSize: "contain",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center",
-                width: "100%",
-              }}
-            ></div>
-          </div>
-          <div>
-            <div
-              style={{
-                height: "80vh",
-                backgroundImage: `url(${t4})`,
-                backgroundSize: "contain",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center",
-                width: "100%",
-              }}
-            ></div>
-          </div>
-        </Carousel>
-        {/* <div style={{height: 500, backgroundColor: "red"}}></div> */}
-      </div>
+      {
 
-      <div style={{ width: "calc(100vw - 200px)", backgroundColor: "white", padding: "50px 100px"}}>
-        <h1 style={{ marginBottom: 40, marginLeft: 15 }}>Products</h1>
-        <div style={{display: "flex", flexWrap: "wrap"}}>
-          {data.map((i) => {
-            if (i.status === "p" && i.uploadedBy!==id) return <Product item={i} show={true} />;
-          })}
-        </div>
-      </div>
+        navigation === 1 ?
+
+          <BestSeller />
+
+          : navigation === 2 ?
+
+            <Cart />
+
+            : navigation === 3 ?
+
+              <Profile userData={userData} />
+
+              : navigation === 4 ?
+
+                <CosOrders />
+
+                :
+
+                <div>
+                  <div style={{ width: "100vw", height: "80vh" }}>
+                    <Carousel autoplay>
+                      <div>
+                        <div
+                          style={{
+                            height: "80vh",
+                            backgroundImage: `url(${t1})`,
+                            backgroundSize: "contain",
+                            backgroundRepeat: "no-repeat",
+                            backgroundPosition: "center",
+                            width: "100%",
+                          }}
+                        ></div>
+                      </div>
+                      <div>
+                        <div
+                          style={{
+                            height: "80vh",
+                            backgroundImage: `url(${t2})`,
+                            backgroundSize: "contain",
+                            backgroundRepeat: "no-repeat",
+                            backgroundPosition: "center",
+                            width: "100%",
+                          }}
+                        ></div>
+                      </div>
+                      <div>
+                        <div
+                          style={{
+                            height: "80vh",
+                            backgroundImage: `url(${t3})`,
+                            backgroundSize: "contain",
+                            backgroundRepeat: "no-repeat",
+                            backgroundPosition: "center",
+                            width: "100%",
+                          }}
+                        ></div>
+                      </div>
+                      <div>
+                        <div
+                          style={{
+                            height: "80vh",
+                            backgroundImage: `url(${t4})`,
+                            backgroundSize: "contain",
+                            backgroundRepeat: "no-repeat",
+                            backgroundPosition: "center",
+                            width: "100%",
+                          }}
+                        ></div>
+                      </div>
+                    </Carousel>
+                    {/* <div style={{height: 500, backgroundColor: "red"}}></div> */}
+                  </div>
+
+                  <div style={{ width: "calc(100vw - 200px)", backgroundColor: "white", padding: "50px 100px" }}>
+                    <h1 style={{ marginBottom: 40, marginLeft: 15 }}>Products</h1>
+                    <div style={{ display: "flex", flexWrap: "wrap" }}>
+                      {data.map((i) => {
+                        if (i.status === "p" && i.uploadedBy !== id) return <Product item={i} show={true} />;
+                      })}
+                    </div>
+                  </div>
+
+                </div>
+
+      }
+
+
       <div
         style={{
           width: 150,
@@ -254,14 +310,14 @@ const Home = () => {
       >
         <div style={{ display: "flex", cursor: "pointer" }}>
           <img src={user} height={16} />
-          <p style={{ marginLeft: 10 }}>My Profile</p>
+          <p style={{ marginLeft: 10 }} onClick={() => { setNavigation(3) }}>My Profile</p>
         </div>
         <div style={{ display: "flex", marginTop: 15, cursor: "pointer" }}>
           <img src={box} height={16} />
-          <p style={{ marginLeft: 10 }}>Orders</p>
+          <p style={{ marginLeft: 10 }} onClick={() => { setNavigation(4) }}>Orders</p>
         </div>
         <div
-          style={{ display: stat==='v' ? "flex" : "none", marginTop: 15, cursor: "pointer" }}
+          style={{ display: stat === 'v' ? "flex" : "none", marginTop: 15, cursor: "pointer" }}
           onClick={() => {
             navigate("/vendor");
           }}
@@ -269,7 +325,7 @@ const Home = () => {
           <img src={vendor} height={20} />
           <p style={{ marginLeft: 10 }}>Vendor</p>
         </div>
-        <div style={{ display: "flex", marginTop: 15, cursor: "pointer" }} onClick={() => { localStorage.removeItem('id')}}>
+        <div style={{ display: "flex", marginTop: 15, cursor: "pointer" }} onClick={() => { localStorage.removeItem('id') }}>
           <img src={logout} height={18} />
           <p style={{ marginLeft: 10 }}>Logout</p>
         </div>

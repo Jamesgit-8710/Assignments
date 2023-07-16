@@ -3,6 +3,7 @@ import LoginSignup from "./pages/LoginSignup";
 import Home from "./pages/Home";
 import Vendor from "./pages/Vendor";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Admin from "./pages/Admin";
 
 const App = () => {
   const [element, setElement] = useState(<LoginSignup />);
@@ -15,15 +16,20 @@ const App = () => {
     }
   },[]);
 
+
   return (
     // <LoginSignup/>
     // <Home/>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={element} />
-        <Route path="/vendor" element={<Vendor />} />
-      </Routes>
-    </BrowserRouter>
+    <Admin/>
+    
+    // <BrowserRouter>
+    //   <Routes>
+    //     <Route path="/" element={element} />
+    //     <Route path="/vendor" element={<Vendor />} />
+    //   </Routes>
+    // </BrowserRouter>
+
+
     // <Vendor/>
   );
 };

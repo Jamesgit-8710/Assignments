@@ -1,4 +1,5 @@
 .homeBackground{
+    height: 100vh;
     width: 100vw;
     background-color: rgb(241, 243, 245);
 }
@@ -8,8 +9,13 @@
     display: flex;
     justify-content: space-between;
     padding: 20px 40px;
+    /* color: rgb(0, 0, 57); */
 }
 
 body::-webkit-scrollbar {
+    display: none;
+}
+
+.cart::-webkit-scrollbar {
     display: none;
 }

@@ -132,7 +132,7 @@ const Vendor = () => {
     // }, 2000);
   };
 
-  const handleCancel = () => {
+  const handleOk2 = () => {
     if (name !== "" && price !== "" && qty !== "" && des !== "" && cat !== "") {
       const res = axios.post("http://localhost:8000/addProduct", {
         name: name,
@@ -159,8 +159,11 @@ const Vendor = () => {
       });
     }
 
-    setOpen(false);
   };
+
+  const handleCancel = () => {
+    setOpen(false);
+  }
 
   const call = () => {
     console.log("first");
@@ -251,7 +254,7 @@ const Vendor = () => {
         onCancel={handleCancel}
         style={{ top: "10vh" }}
         footer={[
-          <Button key="back" onClick={handleCancel}>
+          <Button key="back" onClick={handleOk2}>
             Save as Draft
           </Button>,
           <Button

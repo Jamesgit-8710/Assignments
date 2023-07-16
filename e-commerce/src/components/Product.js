@@ -22,7 +22,18 @@ const getBase64 = (file) =>
 const Product = ({ item, show }) => {
   const size = "large";
   const key = "updatable";
+  const id = localStorage.getItem("id");
   const [messageApi, contextHolder] = message.useMessage();
+  const [dis, setDis] = useState(false)
+
+  const check = async() => {
+    const res = await axios.post("http://localhost:8000/checkCart", { id: item._id, myId: id});
+
+    setDis(res.data);
+  }
+
+  check();
+
 
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
@@ -120,6 +131,17 @@ const Product = ({ item, show }) => {
     setOpen(true);
   };
 
+  const add = async() => {
+    const res = await axios.post("http://localhost:8000/cart", { id: id, data: {itemId: item._id, count: 1, price: item.price}});
+    messageApi.open({
+      key,
+      type: "success",
+      content: "Added to cart!",
+      duration: 2,
+    });
+  }
+
+
   return (
     <div style={{ padding: 15 }}>
       {contextHolder}
@@ -163,8 +185,10 @@ const Product = ({ item, show }) => {
             width: "100%",
             display: show ? "block" : "none",
           }}
+          disabled={dis}
+          onClick={add}
         >
-          Add to Cart
+          {dis?"Added to Cart":"Add to cart"}
         </Button>
       </Card>
 
@@ -250,7 +274,7 @@ const Product = ({ item, show }) => {
             <TextArea
               rows={4}
               placeholder="Description"
-              // onChange={(e) => setDes2(e.target.value)}
+              onChange={(e) => setDes(e.target.value)}
             />
           </Form.Item>
           <Form.Item>

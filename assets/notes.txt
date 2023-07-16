@@ -46,6 +46,16 @@ RoL5SGKyU4L3U6Zx
 mongodb+srv://james1131:RoL5SGKyU4L3U6Zx@cluster0.ko8ydnw.mongodb.net/
 mongodb://localhost:27017
 
+jeja8710
+LYzvNm9aNWpnWnNO
+
+mongodb+srv://jeja8710:LYzvNm9aNWpnWnNO@cluster0.1yxyjic.mongodb.net/
+mongodb+srv://jeja8710:LYzvNm9aNWpnWnNO@cluster0.1yxyjic.mongodb.net/
+mongodb+srv://jeja8710:LYzvNm9aNWpnWnNO@cluster0.1yxyjic.mongodb.net/
+
+
+
+
 
 npm i express
 npm init -y
