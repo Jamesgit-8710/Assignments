@@ -126,10 +126,19 @@ app.post("/getProduct", async (req, res) => {
 //   res.status(200).send(true);
 });
 
+app.post("/allUsers", async (req, res) => {
+
+  await users.find({}).then((result) => {
+    res.status(200).send(result)
+  });
+
+//   res.status(200).send(true);
+});
+
 app.post("/product", async (req, res) => {
 
   await product.find({_id: req.body.id}).then((result) => {
-    console.log(result);
+    // console.log(result);
     res.status(200).send(result)
   });
 
@@ -141,6 +150,24 @@ app.post("/cartData", async (req, res) => {
   await users.find({_id: req.body.id}).then((result) => {
     // console.log(result[0].cart);
     res.status(200).send(result[0].cart)
+  });
+
+//   res.status(200).send(true);
+});
+
+app.post("/totalamount", async (req, res) => {
+
+  console.log("first")
+
+  await users.find({_id: req.body.id}).then((result) => {
+    // console.log(result[0].cart);
+    let sum = 0;
+    result[0].cart.map((i) => {
+      const price = i.price;
+      const count = i.count;
+      sum+= price*count
+    })
+    res.status(200).send({sum});
   });
 
 //   res.status(200).send(true);
@@ -171,6 +198,15 @@ app.post("/update", async (req, res) => {
   // console.log(req.body)
 
   await product.updateOne({_id: req.body.id},{$set: req.body.data})
+
+  res.status(200).send(true);
+});
+
+app.post("/updateKey", async (req, res) => {
+
+  // console.log(req.body)
+
+  await users.updateOne({_id: req.body.id},{status: req.body.key})
 
   res.status(200).send(true);
 });

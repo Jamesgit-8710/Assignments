@@ -20,14 +20,14 @@ const App = () => {
   return (
     // <LoginSignup/>
     // <Home/>
-    <Admin/>
+    // <Admin/>
     
-    // <BrowserRouter>
-    //   <Routes>
-    //     <Route path="/" element={element} />
-    //     <Route path="/vendor" element={<Vendor />} />
-    //   </Routes>
-    // </BrowserRouter>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={element} />
+        <Route path="/vendor" element={<Vendor />} />
+      </Routes>
+    </BrowserRouter>
 
 
     // <Vendor/>

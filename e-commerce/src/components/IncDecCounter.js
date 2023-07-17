@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button } from 'antd';
 import axios from 'axios';
 
-const IncDecCounter = ({n,qty,set,itemId}) => {
+const IncDecCounter = ({n,qty,set,itemId,awoke}) => {
 
     useEffect(() => {
         set(n);
@@ -17,6 +17,8 @@ const IncDecCounter = ({n,qty,set,itemId}) => {
             setNum(Number(num) + 1);
             set(Number(num) + 1)
 
+            awoke(num);
+
             const res = await axios.post("http://localhost:8000/updateItem",{id: id,data: Number(num) + 1,itemId: itemId});
         }
     };
@@ -25,6 +27,8 @@ const IncDecCounter = ({n,qty,set,itemId}) => {
         if (num > 1) {
             setNum(num - 1);
             set(Number(num) - 1)
+
+            awoke(num);
 
             const res = await axios.post("http://localhost:8000/updateItem",{id: id,data: Number(num) - 1,itemId: itemId});
         }

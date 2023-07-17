@@ -4,7 +4,7 @@ import { Button, message } from 'antd'
 import img from '../assets/iphone.jpg'
 import axios from 'axios'
 
-const Item = ({ item }) => {
+const Item = ({ item , awoke }) => {
 
     const id = localStorage.getItem('id');
 
@@ -50,7 +50,7 @@ const Item = ({ item }) => {
                     <p style={{ fontWeight: 500, fontSize: 20, marginTop: 10 }}>
                         &#8377;{data[0]?.price}
                     </p>
-                    <IncDecCounter n={item.count} qty={data[0]?.qty} set={setVal} itemId={item.itemId} />
+                    <IncDecCounter n={item.count} qty={data[0]?.qty} set={setVal} itemId={item.itemId} awoke={awoke}/>
                     <Button type="primary" style={{ marginLeft: 40 }} onClick={rmv} danger ghost>
                         Remove
                     </Button>

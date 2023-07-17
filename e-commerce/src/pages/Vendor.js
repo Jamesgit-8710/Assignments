@@ -7,14 +7,8 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Form, Input, Select, Upload, message } from "antd";
 import axios from "axios";
 import Product from "../components/Product";
-
-const getBase64 = (file) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { storage } from "../services/firbase.auth";
 
 const Vendor = () => {
   const [loading, setLoading] = useState(false);
@@ -33,6 +27,8 @@ const Vendor = () => {
   const [des, setDes] = useState("");
   const [cat, setCat] = useState("");
   const [data, setData] = useState([]);
+  const [fileList, setFileList] = useState([]);
+  const [files, setFiles] = useState([]);
 
   const { TextArea } = Input;
 
@@ -40,8 +36,13 @@ const Vendor = () => {
   const [val2, setVal2] = useState("p");
 
   const onClick = ({ key }) => {
-    if (key === "1"){ setVal("Published"); setVal2('p')}
-    else if (key === "2"){ setVal("Draft"); setVal2('d')}
+    if (key === "1") {
+      setVal("Published");
+      setVal2("p");
+    } else if (key === "2") {
+      setVal("Draft");
+      setVal2("d");
+    }
   };
 
   const items = [
@@ -55,42 +56,6 @@ const Vendor = () => {
     },
   ];
 
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState("");
-  const [previewTitle, setPreviewTitle] = useState("");
-  const [fileList, setFileList] = useState([]);
-
-  const handleCancel2 = () => setPreviewOpen(false);
-
-  const handlePreview = async (file) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-    setPreviewImage(file.url || file.preview);
-    setPreviewOpen(true);
-    setPreviewTitle(
-      file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
-    );
-  };
-
-  const handleChange = ({ fileList: newFileList }) => {
-    console.log(newFileList);
-    setFileList(newFileList);
-  };
-
-  const uploadButton = (
-    <div>
-      <PlusOutlined />
-      <div
-        style={{
-          marginTop: 8,
-        }}
-      >
-        Upload
-      </div>
-    </div>
-  );
-
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
@@ -98,7 +63,7 @@ const Vendor = () => {
     setOpen(true);
   };
 
-  const handleOk = () => {
+  const handleOk = async () => {
     if (name !== "" && price !== "" && qty !== "" && des !== "" && cat !== "") {
       const res = axios.post("http://localhost:8000/addProduct", {
         name: name,
@@ -158,15 +123,51 @@ const Vendor = () => {
         duration: 2,
       });
     }
-
   };
 
   const handleCancel = () => {
     setOpen(false);
-  }
+  };
 
   const call = () => {
     console.log("first");
+  };
+
+  const set = async (event) => {
+    console.log(event.target.value);
+    if (event.target.value !== "") {
+      const f = event.target.files[0];
+
+      const imgName = id + Date().toString();
+
+      const storageRef = ref(storage, "images/" + imgName);
+
+      await uploadBytes(storageRef, f).then((snapshot) => {
+        console.log("Uploaded");
+      });
+
+      let imgUrl = "";
+
+      await getDownloadURL(ref(storage, "images/" + imgName))
+        .then((url) => {
+          imgUrl = url;
+        })
+        .catch((error) => {
+          alert(error);
+        });
+
+      setFiles(...files,imgUrl);
+
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        const base64Image = e.target.result;
+
+        setFileList([...fileList, base64Image]);
+      };
+
+      reader.readAsDataURL(f);
+    }
   };
 
   useEffect(() => {
@@ -241,9 +242,9 @@ const Vendor = () => {
           backgroundColor: "rgb(241, 243, 245)",
         }}
       >
-        {data.map((i,index) => {
+        {data.map((i, index) => {
           if (i.uploadedBy === id && i.status === val2)
-            return <Product item={i} show={false}/>;
+            return <Product item={i} show={false} />;
         })}
       </div>
       <Modal
@@ -325,34 +326,41 @@ const Vendor = () => {
               onChange={(e) => setDes(e.target.value)}
             />
           </Form.Item>
-          <Form.Item>
-            <Upload
-              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-              listType="picture-card"
-              fileList={fileList}
-              onPreview={handlePreview}
-              onChange={handleChange}
-            >
-              {fileList.length >= 4 ? null : uploadButton}
-            </Upload>
-            <Modal
-              open={previewOpen}
-              title={previewTitle}
-              footer={null}
-              onCancel={handleCancel2}
-            >
-              <img
-                alt="example"
-                style={{
-                  width: "100%",
-                }}
-                src={previewImage}
-              />
-            </Modal>
-          </Form.Item>
+          <div style={{ display: "flex" }}>
+            {fileList.map((i) => {
+              return (
+                <img
+                  src={i}
+                  height={100}
+                  width={100}
+                  style={{
+                    border: "1px solid gray",
+                    padding: 5,
+                    borderRadius: 5,
+                  }}
+                />
+              );
+            })}
+
+            {fileList.length !== 4 ? (
+              <div style={{ height: 100, width: 100, backgroundColor: "grey" }}>
+                <input
+                  type="file"
+                  onChange={set}
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    backgroundColor: "grey",
+                    opacity: 0,
+                  }}
+                />
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
         </Form>
       </Modal>
-
     </div>
   );
 };
