@@ -30,6 +30,9 @@ import VendorList from "../components/VendorList";
 import VenOrders from "../components/VenOrders";
 import Profile from "../components/Profile";
 import Drop from "../components/Drop";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { storage } from "../services/firbase.auth";
+import AdminOrders from "../components/AdminOrders";
 
 function getItem(label, key, icon, click) {
   return {
@@ -105,6 +108,8 @@ const Admin = () => {
   const [data, setData] = useState([]);
   const [val, setVal] = useState(0);
   const [userData, setUserData] = useState({});
+  const [files, setFiles] = useState([]);
+  const [val2, setVal2] = useState('p');
 
   // const [val2, setVal2] = useState("Published");
   // const [val3, setVal3] = useState("p");
@@ -123,22 +128,32 @@ const Admin = () => {
 
   const handleOk = () => {
     if (name !== "" && price !== "" && qty !== "" && des !== "" && cat !== "") {
-      const res = axios.post("http://localhost:8000/addProduct", {
-        name: name,
-        price: price,
-        qty: qty,
-        des: des,
-        cat: cat,
-        uploadedBy: id,
-        status: "p",
-      });
-      messageApi.open({
-        key,
-        type: "success",
-        content: "Uploaded!",
-        duration: 2,
-      });
-      setOpen(false);
+      if (files.length === 4) {
+        const res = axios.post("http://localhost:8000/addProduct", {
+          name: name,
+          price: price,
+          qty: qty,
+          des: des,
+          cat: cat,
+          uploadedBy: id,
+          status: "p",
+          images: files
+        });
+        messageApi.open({
+          key,
+          type: "success",
+          content: "Uploaded!",
+          duration: 2,
+        });
+        setOpen(false);
+      } else {
+        messageApi.open({
+          key,
+          type: "warning",
+          content: "Select at least 4 images!",
+          duration: 2,
+        });
+      }
     } else {
       messageApi.open({
         key,
@@ -189,6 +204,47 @@ const Admin = () => {
 
   const call = () => {
     console.log("first");
+  };
+
+  const set = async (event) => {
+    if (event.target.value !== "") {
+      const f = event.target.files[0];
+
+      messageApi.open({
+        key,
+        type: "loading",
+        content: "Loading...",
+        duration: 2,
+      });
+
+      const imgName = id + Date().toString();
+
+      const storageRef = ref(storage, "images/" + imgName);
+
+      await uploadBytes(storageRef, f).then((snapshot) => {
+        console.log("Uploaded");
+      });
+
+      let imgUrl = "";
+
+      await getDownloadURL(ref(storage, "images/" + imgName))
+        .then((url) => {
+          imgUrl = url;
+        })
+        .catch((error) => {
+          alert(error);
+        });
+
+      setFiles([...files, imgUrl]);
+
+      messageApi.open({
+        key,
+        type: "success",
+        content: "Done!",
+        duration: 2,
+      });
+
+    }
   };
 
   useEffect(() => {
@@ -248,7 +304,7 @@ const Admin = () => {
                                     </Space>
                                 </Button>
                             </Dropdown> */}
-                <Drop />
+                <Drop sent={setVal2}/>
                 <Button
                   style={{ marginTop: 5 }}
                   type="primary"
@@ -267,7 +323,7 @@ const Admin = () => {
           {val === 2 ? (
             <VendorList />
           ) : val === 3 ? (
-            <VenOrders />
+            <AdminOrders />
           ) : val === 4 ? (
             <Profile userData={userData} />
           ) : (
@@ -282,7 +338,8 @@ const Admin = () => {
               }}
             >
               {data.map((i, index) => {
-                if (i.status === "p") return <Product item={i} show={false} />;
+                if (i.status === "p" && val2 === 'p') return <Product item={i} show={false} />;
+                else if(i.uploadedBy === id && i.status === val2) return <Product item={i} show={false} />;
               })}
             </div>
           )}
@@ -374,7 +431,39 @@ const Admin = () => {
                   onChange={(e) => setDes(e.target.value)}
                 />
               </Form.Item>
-             
+              <div style={{ display: "flex" }}>
+            {files.map((i) => {
+              return (
+                <img
+                  src={i}
+                  height={100}
+                  width={100}
+                  style={{
+                    border: "1px solid gray",
+                    padding: 5,
+                    borderRadius: 5,
+                  }}
+                />
+              );
+            })}
+
+            {files.length !== 4 ? (
+              <div style={{ height: 100, width: 100, backgroundColor: "grey" }}>
+                <input
+                  type="file"
+                  onChange={set}
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    backgroundColor: "grey",
+                    opacity: 0,
+                  }}
+                />
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
             </Form>
           </Modal>
         </div>

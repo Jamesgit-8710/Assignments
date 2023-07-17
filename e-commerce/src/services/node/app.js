@@ -32,9 +32,22 @@ const prodSchema = new mongoose.Schema({
   des: String,
   uploadedBy: String,
   status: String,
+  images: Array
 });
 
 const product = mongoose.model("product", prodSchema);
+
+const orderSchema = new mongoose.Schema({
+  itemId: String,
+  count: Number,
+  price: Number,
+  user: String,
+  vendor: String,
+  status: String,
+  payMethod: String
+});
+
+const order = mongoose.model("order", orderSchema);
 
 app.post("/user", async (req, res) => {
   const user = new users();
@@ -109,8 +122,30 @@ app.post("/addProduct", async (req, res) => {
   prod.des=req.body.des;
   prod.uploadedBy=req.body.uploadedBy;
   prod.status=req.body.status;
+  prod.images=req.body.images;
 
   await prod.save();
+
+  res.status(200).send(true);
+
+//   res.status(200).send(true);
+});
+
+app.post("/addOrder", (req, res) => {
+
+  req.body.data.forEach(async(item) => {
+    const ordr = new order();
+
+    ordr.itemId=item.itemId;
+    ordr.vendor=item.uploadedBy;
+    ordr.user=req.body.id;
+    ordr.count=item.count;
+    ordr.price=item.price;
+    ordr.status=req.body.status;
+    ordr.payMethod=req.body.payMethod;
+
+    await ordr.save();
+  })
 
   res.status(200).send(true);
 
@@ -129,6 +164,15 @@ app.post("/getProduct", async (req, res) => {
 app.post("/allUsers", async (req, res) => {
 
   await users.find({}).then((result) => {
+    res.status(200).send(result)
+  });
+
+//   res.status(200).send(true);
+});
+
+app.post("/orderData", async (req, res) => {
+
+  await order.find({}).then((result) => {
     res.status(200).send(result)
   });
 
@@ -202,6 +246,15 @@ app.post("/update", async (req, res) => {
   res.status(200).send(true);
 });
 
+app.post("/updateOrder", async (req, res) => {
+
+  // console.log(req.body)
+
+  await order.updateOne({_id: req.body.id},{$set: {status: req.body.data}})
+
+  res.status(200).send(true);
+});
+
 app.post("/updateKey", async (req, res) => {
 
   // console.log(req.body)
@@ -235,6 +288,22 @@ app.post("/deleteItem", async (req, res) => {
   const filter = { $pull: { cart: { itemId: req.body.itemId  } } }
 
   await users.updateOne(id,filter);
+
+  res.status(200).send(true);
+});
+
+app.post("/checkExist", async (req, res) => {
+
+  const arr = await users.findOne({_id: req.body.myId})
+
+  const arr2 = arr.cart;
+
+  res.status(200).send(arr2);
+});
+
+app.post("/clearCart", async (req, res) => {
+
+  await users.updateOne({_id: req.body.myId},{$set: {cart: []}})
 
   res.status(200).send(true);
 });

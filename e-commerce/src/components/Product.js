@@ -11,14 +11,6 @@ import { PlusOutlined } from "@ant-design/icons";
 
 const { Meta } = Card;
 
-const getBase64 = (file) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
-
 const Product = ({ item, show }) => {
   const size = "large";
   const key = "updatable";
@@ -33,12 +25,6 @@ const Product = ({ item, show }) => {
   }
 
   check();
-
-
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewImage, setPreviewImage] = useState("");
-  const [previewTitle, setPreviewTitle] = useState("");
-  const [fileList, setFileList] = useState([]);
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -82,35 +68,6 @@ const Product = ({ item, show }) => {
     setOpen(false);
   };
 
-  const handlePreview = async (file) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-    setPreviewImage(file.url || file.preview);
-    setPreviewOpen(true);
-    setPreviewTitle(
-      file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
-    );
-  };
-
-  const handleChange = ({ fileList: newFileList }) => {
-    console.log(newFileList);
-    setFileList(newFileList);
-  };
-
-  const uploadButton = (
-    <div>
-      <PlusOutlined />
-      <div
-        style={{
-          marginTop: 8,
-        }}
-      >
-        Upload
-      </div>
-    </div>
-  );
-
   const rmv = () => {
     const res = axios.post("http://localhost:8000/delete", { id: item._id });
     messageApi.open({
@@ -132,7 +89,7 @@ const Product = ({ item, show }) => {
   };
 
   const add = async() => {
-    const res = await axios.post("http://localhost:8000/cart", { id: id, data: {itemId: item._id, count: 1, price: item.price}});
+    const res = await axios.post("http://localhost:8000/cart", { id: id, data: {itemId: item._id, count: 1, price: item.price,uploadedBy: item.uploadedBy}});
     messageApi.open({
       key,
       type: "success",
@@ -148,7 +105,7 @@ const Product = ({ item, show }) => {
       <Card
         hoverable
         style={{ width: 280 }}
-        cover={<img alt="example" src={iphone} height={300} />}
+        cover={<img alt="example" src={item.images[0]} height={300} />}
       >
         <Meta title={item.productName} description={item.des} />
         <p style={{ fontWeight: 500, fontSize: 20, marginTop: 10 }}>
@@ -277,31 +234,7 @@ const Product = ({ item, show }) => {
               onChange={(e) => setDes(e.target.value)}
             />
           </Form.Item>
-          <Form.Item>
-            <Upload
-              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-              listType="picture-card"
-              fileList={fileList}
-              onPreview={handlePreview}
-              onChange={handleChange}
-            >
-              {fileList.length >= 4 ? null : uploadButton}
-            </Upload>
-            <Modal
-              open={previewOpen}
-              title={previewTitle}
-              footer={null}
-              onCancel={handleCancel}
-            >
-              <img
-                alt="example"
-                style={{
-                  width: "100%",
-                }}
-                src={previewImage}
-              />
-            </Modal>
-          </Form.Item>
+          
         </Form>
       </Modal>
     </div>

@@ -9,6 +9,8 @@ import axios from "axios";
 import Product from "../components/Product";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../services/firbase.auth";
+import VenOrders from "../components/VenOrders";
+import VenHistory from "../components/VenHistory";
 
 const Vendor = () => {
   const [loading, setLoading] = useState(false);
@@ -21,14 +23,16 @@ const Vendor = () => {
 
   const size = "large";
 
+
+
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [qty, setQty] = useState("");
   const [des, setDes] = useState("");
   const [cat, setCat] = useState("");
   const [data, setData] = useState([]);
-  const [fileList, setFileList] = useState([]);
   const [files, setFiles] = useState([]);
+  const [val3, setVal3] = useState(0);
 
   const { TextArea } = Input;
 
@@ -65,22 +69,32 @@ const Vendor = () => {
 
   const handleOk = async () => {
     if (name !== "" && price !== "" && qty !== "" && des !== "" && cat !== "") {
-      const res = axios.post("http://localhost:8000/addProduct", {
-        name: name,
-        price: price,
-        qty: qty,
-        des: des,
-        cat: cat,
-        uploadedBy: id,
-        status: "p",
-      });
-      messageApi.open({
-        key,
-        type: "success",
-        content: "Uploaded!",
-        duration: 2,
-      });
-      setOpen(false);
+      if (files.length === 4) {
+        const res = axios.post("http://localhost:8000/addProduct", {
+          name: name,
+          price: price,
+          qty: qty,
+          des: des,
+          cat: cat,
+          uploadedBy: id,
+          status: "p",
+          images: files
+        });
+        messageApi.open({
+          key,
+          type: "success",
+          content: "Uploaded!",
+          duration: 2,
+        });
+        setOpen(false);
+      } else {
+        messageApi.open({
+          key,
+          type: "warning",
+          content: "Select at least 4 images!",
+          duration: 2,
+        });
+      }
     } else {
       messageApi.open({
         key,
@@ -99,22 +113,32 @@ const Vendor = () => {
 
   const handleOk2 = () => {
     if (name !== "" && price !== "" && qty !== "" && des !== "" && cat !== "") {
-      const res = axios.post("http://localhost:8000/addProduct", {
-        name: name,
-        price: price,
-        qty: qty,
-        des: des,
-        cat: cat,
-        uploadedBy: id,
-        status: "d",
-      });
-      messageApi.open({
-        key,
-        type: "success",
-        content: "Uploaded!",
-        duration: 2,
-      });
-      setOpen(false);
+      if (files.length === 4) {
+        const res = axios.post("http://localhost:8000/addProduct", {
+          name: name,
+          price: price,
+          qty: qty,
+          des: des,
+          cat: cat,
+          uploadedBy: id,
+          status: "d",
+          images: files
+        });
+        messageApi.open({
+          key,
+          type: "success",
+          content: "Uploaded!",
+          duration: 2,
+        });
+        setOpen(false);
+      } else {
+        messageApi.open({
+          key,
+          type: "warning",
+          content: "Select at least 4 images!",
+          duration: 2,
+        });
+      }
     } else {
       messageApi.open({
         key,
@@ -134,9 +158,15 @@ const Vendor = () => {
   };
 
   const set = async (event) => {
-    console.log(event.target.value);
     if (event.target.value !== "") {
       const f = event.target.files[0];
+
+      messageApi.open({
+        key,
+        type: "loading",
+        content: "Loading...",
+        duration: 2,
+      });
 
       const imgName = id + Date().toString();
 
@@ -156,17 +186,15 @@ const Vendor = () => {
           alert(error);
         });
 
-      setFiles(...files,imgUrl);
+      setFiles([...files, imgUrl]);
 
-      const reader = new FileReader();
+      messageApi.open({
+        key,
+        type: "success",
+        content: "Done!",
+        duration: 2,
+      });
 
-      reader.onload = (e) => {
-        const base64Image = e.target.result;
-
-        setFileList([...fileList, base64Image]);
-      };
-
-      reader.readAsDataURL(f);
     }
   };
 
@@ -208,6 +236,19 @@ const Vendor = () => {
               marginRight: 60,
               cursor: "pointer",
             }}
+            onClick={() => { setVal3(0) }}
+          >
+            Home
+          </p>
+          <p
+            style={{
+              fontSize: 18,
+              fontWeight: 400,
+              marginTop: 5,
+              marginRight: 60,
+              cursor: "pointer",
+            }}
+            onClick={() => { setVal3(1) }}
           >
             Orders
           </p>
@@ -219,6 +260,7 @@ const Vendor = () => {
               marginRight: 60,
               cursor: "pointer",
             }}
+            onClick={() => { setVal3(2) }}
           >
             History
           </p>
@@ -235,18 +277,30 @@ const Vendor = () => {
           </Button>
         </div>
       </div>
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          backgroundColor: "rgb(241, 243, 245)",
-        }}
-      >
-        {data.map((i, index) => {
-          if (i.uploadedBy === id && i.status === val2)
-            return <Product item={i} show={false} />;
-        })}
-      </div>
+
+
+      {
+        val3 === 1 ?
+          <VenOrders />
+          : val3 === 2 ?
+            <VenHistory />
+            :
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                backgroundColor: "rgb(241, 243, 245)",
+              }}
+            >
+              {data.map((i, index) => {
+                if (i.uploadedBy === id && i.status === val2)
+                  return <Product item={i} show={false} />;
+              })}
+            </div>
+
+
+      }
+
       <Modal
         title="Add Product"
         open={open}
@@ -327,7 +381,7 @@ const Vendor = () => {
             />
           </Form.Item>
           <div style={{ display: "flex" }}>
-            {fileList.map((i) => {
+            {files.map((i) => {
               return (
                 <img
                   src={i}
@@ -342,7 +396,7 @@ const Vendor = () => {
               );
             })}
 
-            {fileList.length !== 4 ? (
+            {files.length !== 4 ? (
               <div style={{ height: 100, width: 100, backgroundColor: "grey" }}>
                 <input
                   type="file"

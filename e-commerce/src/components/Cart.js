@@ -25,17 +25,22 @@ const Cart = () => {
   const [address, setAddress] = useState("");
   const [number, setNumber] = useState("");
   const [vis, setVis] = useState("none");
+  const [vis2, setVis2] = useState("none");
 
   const onChange = (e) => {
     console.log("radio checked", e.target.value);
     setValue(e.target.value);
   };
 
-  const handleOk = () => {
+  const handleOk = async() => {
     console.log(number);
     if (address !== "" && value !== 0) {
       if (value === 1) {
         setConfirmLoading(true);
+
+        const res = await axios.post("http://localhost:8000/addOrder", {data: data,id: id,status: 'd',payMethod: "cod"});
+
+        const res2 = await axios.post("http://localhost:8000/clearCart", {myId: id});
 
         setTimeout(() => {
           setOpen(false);
@@ -50,6 +55,10 @@ const Cart = () => {
         }, 1000);
       } else if (value === 2 && number !== "") {
         setConfirmLoading(true);
+
+        const res = await axios.post("http://localhost:8000/addOrder", {data: data,id: id,status: 'd',payMethod: "card"});
+
+        const res2 = await axios.post("http://localhost:8000/clearCart", {myId: id});
 
         setTimeout(() => {
           setOpen(false);
@@ -101,6 +110,14 @@ const Cart = () => {
       // const res2 = await axios.post("http://localhost:8000/product", { id: res.data.});
 
       setAmount(res2.data.sum);
+
+      const res3 = await axios.post("http://localhost:8000/checkExist", {
+        myId: id,
+      });
+
+      if(res3.data.length!==0)
+      setVis2("flex");
+
     };
 
     call();
@@ -125,7 +142,7 @@ const Cart = () => {
       </p>
 
       {data.map((i) => {
-        return <Item item={i} awoke={awoke} />;
+        return <Item item={i} awoke={awoke} show={true}/>;
       })}
 
       <div
@@ -134,7 +151,7 @@ const Cart = () => {
           backgroundColor: "white",
           position: "absolute",
           bottom: 0,
-          display: "flex",
+          display: vis2,
           justifyContent: "space-between",
           padding: "20px 0px",
           borderTop: "1px solid rgb(241, 243, 245)",
