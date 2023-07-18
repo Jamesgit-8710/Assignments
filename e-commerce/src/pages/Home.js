@@ -23,37 +23,60 @@ import Cart from "../components/Cart";
 import CosOrders from "../components/CosOrders";
 
 const Home = () => {
-
   const id = localStorage.getItem("id");
 
-  const [navigation, setNavigation] = useState(0)
+  const [navigation, setNavigation] = useState(0);
 
   const navigate = useNavigate();
   const [val, setVal] = useState(0);
 
   const [vis, setVis] = useState("none");
   const [data, setData] = useState([]);
-  const [stat, setStat] = useState("")
+  const [stat, setStat] = useState("");
   const [userData, setUserData] = useState({});
+  const [search, setSearch] = useState("");
 
   const onClick = ({ key }) => {
-    message.info(`Click on item ${key}`);
+    // message.info(`Click on item ${key}`);
+    setSearch(key)
   };
 
   const items = [
     {
-      label: "1st menu item",
-      key: "1",
+      label: "Cloths",
+      key: "Cloths",
     },
     {
-      label: "2nd menu item",
-      key: "2",
+      label: "Electronics",
+      key: "Electronics",
     },
     {
-      label: "3rd menu item",
-      key: "3",
+      label: "Shoes",
+      key: "Shoes",
+    },
+    {
+      label: "Accessories",
+      key: "Accessories",
+    },
+    {
+      label: "Furniture",
+      key: "Furniture",
+    },
+    {
+      label: "Unset",
+      key: "",
     },
   ];
+
+  const filtered = data.filter((i) => {
+    if (i.productName.toLowerCase().includes(search.toLowerCase()))
+      return i.productName.toLowerCase().includes(search.toLowerCase());
+    else if (i.des.toLowerCase().includes(search.toLowerCase()))
+      return i.des.toLowerCase().includes(search.toLowerCase());
+    else if (i.cat.toLowerCase().includes(search.toLowerCase()))
+      return i.cat.toLowerCase().includes(search.toLowerCase());
+  });
+
 
   useEffect(() => {
     const getData = async () => {
@@ -63,7 +86,9 @@ const Home = () => {
       const res2 = await axios.post("http://localhost:8000/stat", { id: id });
       setStat(res2.data);
 
-      const res3 = await axios.post('http://localhost:8000/getUser', { id: id });
+      const res3 = await axios.post("http://localhost:8000/getUser", {
+        id: id,
+      });
       setUserData(res3.data);
     };
 
@@ -79,13 +104,16 @@ const Home = () => {
             Shopcart
           </h2>
           <Input
-            placeholder="Search Product"
+            placeholder="Search Product by name, category, description"
             style={{
               width: "100%",
               marginLeft: 30,
               borderRadius: 50,
               height: 35,
               minWidth: "11rem",
+            }}
+            onChange={(e) => {
+              setSearch(e.target.value);
             }}
           />
         </div>
@@ -99,8 +127,9 @@ const Home = () => {
               marginLeft: 5,
               cursor: "pointer",
             }}
-
-            onClick={() => { setNavigation(0) }}
+            onClick={() => {
+              setNavigation(0);
+            }}
           >
             Home
           </p>
@@ -133,8 +162,9 @@ const Home = () => {
               marginLeft: 5,
               cursor: "pointer",
             }}
-
-            onClick={() => { setNavigation(1) }}
+            onClick={() => {
+              setNavigation(1);
+            }}
           >
             Best sellers
           </p>
@@ -147,7 +177,9 @@ const Home = () => {
               borderRadius: 7,
               cursor: "pointer",
             }}
-            onClick={() => { setNavigation(2) }}
+            onClick={() => {
+              setNavigation(2);
+            }}
           ></div>
           <p
             style={{
@@ -158,8 +190,9 @@ const Home = () => {
               marginLeft: 5,
               cursor: "pointer",
             }}
-
-            onClick={() => { setNavigation(2) }}
+            onClick={() => {
+              setNavigation(2);
+            }}
           >
             Cart
           </p>
@@ -198,94 +231,94 @@ const Home = () => {
         </div>
       </div>
 
-      {
+      {navigation === 1 ? (
+        <BestSeller />
+      ) : navigation === 2 ? (
+        <Cart />
+      ) : navigation === 3 ? (
+        <Profile userData={userData} />
+      ) : navigation === 4 ? (
+        <CosOrders />
+      ) : (
+        <div>
+          <div
+            style={{
+              width: "100vw",
+              height: "80vh",
+              display: search === "" ? "block" : "none",
+            }}
+          >
+            <Carousel autoplay>
+              <div>
+                <div
+                  style={{
+                    height: "80vh",
+                    backgroundImage: `url(${t1})`,
+                    backgroundSize: "contain",
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "center",
+                    width: "100%",
+                  }}
+                ></div>
+              </div>
+              <div>
+                <div
+                  style={{
+                    height: "80vh",
+                    backgroundImage: `url(${t2})`,
+                    backgroundSize: "contain",
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "center",
+                    width: "100%",
+                  }}
+                ></div>
+              </div>
+              <div>
+                <div
+                  style={{
+                    height: "80vh",
+                    backgroundImage: `url(${t3})`,
+                    backgroundSize: "contain",
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "center",
+                    width: "100%",
+                  }}
+                ></div>
+              </div>
+              <div>
+                <div
+                  style={{
+                    height: "80vh",
+                    backgroundImage: `url(${t4})`,
+                    backgroundSize: "contain",
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "center",
+                    width: "100%",
+                  }}
+                ></div>
+              </div>
+            </Carousel>
+            {/* <div style={{height: 500, backgroundColor: "red"}}></div> */}
+          </div>
 
-        navigation === 1 ?
-
-          <BestSeller />
-
-          : navigation === 2 ?
-
-            <Cart />
-
-            : navigation === 3 ?
-
-              <Profile userData={userData} />
-
-              : navigation === 4 ?
-
-                <CosOrders />
-
-                :
-
-                <div>
-                  <div style={{ width: "100vw", height: "80vh" }}>
-                    <Carousel autoplay>
-                      <div>
-                        <div
-                          style={{
-                            height: "80vh",
-                            backgroundImage: `url(${t1})`,
-                            backgroundSize: "contain",
-                            backgroundRepeat: "no-repeat",
-                            backgroundPosition: "center",
-                            width: "100%",
-                          }}
-                        ></div>
-                      </div>
-                      <div>
-                        <div
-                          style={{
-                            height: "80vh",
-                            backgroundImage: `url(${t2})`,
-                            backgroundSize: "contain",
-                            backgroundRepeat: "no-repeat",
-                            backgroundPosition: "center",
-                            width: "100%",
-                          }}
-                        ></div>
-                      </div>
-                      <div>
-                        <div
-                          style={{
-                            height: "80vh",
-                            backgroundImage: `url(${t3})`,
-                            backgroundSize: "contain",
-                            backgroundRepeat: "no-repeat",
-                            backgroundPosition: "center",
-                            width: "100%",
-                          }}
-                        ></div>
-                      </div>
-                      <div>
-                        <div
-                          style={{
-                            height: "80vh",
-                            backgroundImage: `url(${t4})`,
-                            backgroundSize: "contain",
-                            backgroundRepeat: "no-repeat",
-                            backgroundPosition: "center",
-                            width: "100%",
-                          }}
-                        ></div>
-                      </div>
-                    </Carousel>
-                    {/* <div style={{height: 500, backgroundColor: "red"}}></div> */}
-                  </div>
-
-                  <div style={{ width: "calc(100vw - 200px)", backgroundColor: "white", padding: "50px 100px" }}>
-                    <h1 style={{ marginBottom: 40, marginLeft: 15 }}>Products</h1>
-                    <div style={{ display: "flex", flexWrap: "wrap" }}>
-                      {data.map((i) => {
-                        if (i.status === "p" && i.uploadedBy !== id) return <Product item={i} show={true} />;
-                      })}
-                    </div>
-                  </div>
-
-                </div>
-
-      }
-
+          <div
+            style={{
+              height: "calc(100vh - 175px)",
+              width: "calc(100vw - 200px)",
+              backgroundColor: search===""?"white":"rgb(241, 243, 245)",
+              padding: "50px 100px",
+            }}
+          >
+            <h1 style={{ marginBottom: 40, marginLeft: 15 }}>Products</h1>
+            <div style={{ display: "flex", flexWrap: "wrap" }}>
+              {filtered.map((i) => {
+                if (i.status === "p" && i.uploadedBy !== id)
+                  return <Product item={i} show={true} />;
+              })}
+            </div>
+          </div>
+        </div>
+      )}
 
       <div
         style={{
@@ -310,14 +343,32 @@ const Home = () => {
       >
         <div style={{ display: "flex", cursor: "pointer" }}>
           <img src={user} height={16} />
-          <p style={{ marginLeft: 10 }} onClick={() => { setNavigation(3) }}>My Profile</p>
+          <p
+            style={{ marginLeft: 10 }}
+            onClick={() => {
+              setNavigation(3);
+            }}
+          >
+            My Profile
+          </p>
         </div>
         <div style={{ display: "flex", marginTop: 15, cursor: "pointer" }}>
           <img src={box} height={16} />
-          <p style={{ marginLeft: 10 }} onClick={() => { setNavigation(4) }}>Orders</p>
+          <p
+            style={{ marginLeft: 10 }}
+            onClick={() => {
+              setNavigation(4);
+            }}
+          >
+            Orders
+          </p>
         </div>
         <div
-          style={{ display: stat === 'v' ? "flex" : "none", marginTop: 15, cursor: "pointer" }}
+          style={{
+            display: stat === "v" ? "flex" : "none",
+            marginTop: 15,
+            cursor: "pointer",
+          }}
           onClick={() => {
             navigate("/vendor");
           }}
@@ -325,7 +376,12 @@ const Home = () => {
           <img src={vendor} height={20} />
           <p style={{ marginLeft: 10 }}>Vendor</p>
         </div>
-        <div style={{ display: "flex", marginTop: 15, cursor: "pointer" }} onClick={() => { localStorage.removeItem('id') }}>
+        <div
+          style={{ display: "flex", marginTop: 15, cursor: "pointer" }}
+          onClick={() => {
+            localStorage.removeItem("id");
+          }}
+        >
           <img src={logout} height={18} />
           <p style={{ marginLeft: 10 }}>Logout</p>
         </div>

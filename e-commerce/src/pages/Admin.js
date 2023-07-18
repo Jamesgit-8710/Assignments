@@ -109,7 +109,7 @@ const Admin = () => {
   const [val, setVal] = useState(0);
   const [userData, setUserData] = useState({});
   const [files, setFiles] = useState([]);
-  const [val2, setVal2] = useState('p');
+  const [val2, setVal2] = useState("p");
 
   // const [val2, setVal2] = useState("Published");
   // const [val3, setVal3] = useState("p");
@@ -137,7 +137,7 @@ const Admin = () => {
           cat: cat,
           uploadedBy: id,
           status: "p",
-          images: files
+          images: files,
         });
         messageApi.open({
           key,
@@ -243,7 +243,6 @@ const Admin = () => {
         content: "Done!",
         duration: 2,
       });
-
     }
   };
 
@@ -304,7 +303,19 @@ const Admin = () => {
                                     </Space>
                                 </Button>
                             </Dropdown> */}
-                <Drop sent={setVal2}/>
+                {val === 1 ? <Drop sent={setVal2} /> : ""}
+                {val === 3 ? <p
+                  style={{
+                    fontSize: 18,
+                    fontWeight: 400,
+                    marginTop: 5,
+                    marginRight: 60,
+                    cursor: "pointer",
+                  }}
+                  
+                >
+                  Order history
+                </p>:""}
                 <Button
                   style={{ marginTop: 5 }}
                   type="primary"
@@ -338,8 +349,10 @@ const Admin = () => {
               }}
             >
               {data.map((i, index) => {
-                if (i.status === "p" && val2 === 'p') return <Product item={i} show={false} />;
-                else if(i.uploadedBy === id && i.status === val2) return <Product item={i} show={false} />;
+                if (i.status === "p" && val2 === "p")
+                  return <Product item={i} show={false} />;
+                else if (i.uploadedBy === id && i.status === val2)
+                  return <Product item={i} show={false} />;
               })}
             </div>
           )}
@@ -432,38 +445,40 @@ const Admin = () => {
                 />
               </Form.Item>
               <div style={{ display: "flex" }}>
-            {files.map((i) => {
-              return (
-                <img
-                  src={i}
-                  height={100}
-                  width={100}
-                  style={{
-                    border: "1px solid gray",
-                    padding: 5,
-                    borderRadius: 5,
-                  }}
-                />
-              );
-            })}
+                {files.map((i) => {
+                  return (
+                    <img
+                      src={i}
+                      height={100}
+                      width={100}
+                      style={{
+                        border: "1px solid gray",
+                        padding: 5,
+                        borderRadius: 5,
+                      }}
+                    />
+                  );
+                })}
 
-            {files.length !== 4 ? (
-              <div style={{ height: 100, width: 100, backgroundColor: "grey" }}>
-                <input
-                  type="file"
-                  onChange={set}
-                  style={{
-                    height: "100%",
-                    width: "100%",
-                    backgroundColor: "grey",
-                    opacity: 0,
-                  }}
-                />
+                {files.length !== 4 ? (
+                  <div
+                    style={{ height: 100, width: 100, backgroundColor: "grey" }}
+                  >
+                    <input
+                      type="file"
+                      onChange={set}
+                      style={{
+                        height: "100%",
+                        width: "100%",
+                        backgroundColor: "grey",
+                        opacity: 0,
+                      }}
+                    />
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
-            ) : (
-              ""
-            )}
-          </div>
             </Form>
           </Modal>
         </div>

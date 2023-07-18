@@ -38,7 +38,7 @@ const Cart = () => {
       if (value === 1) {
         setConfirmLoading(true);
 
-        const res = await axios.post("http://localhost:8000/addOrder", {data: data,id: id,status: 'd',payMethod: "cod"});
+        const res = await axios.post("http://localhost:8000/addOrder", {data: data,id: id,status: 'd',payMethod: "cod",address: address});
 
         const res2 = await axios.post("http://localhost:8000/clearCart", {myId: id});
 
@@ -56,7 +56,7 @@ const Cart = () => {
       } else if (value === 2 && number !== "") {
         setConfirmLoading(true);
 
-        const res = await axios.post("http://localhost:8000/addOrder", {data: data,id: id,status: 'd',payMethod: "card"});
+        const res = await axios.post("http://localhost:8000/addOrder", {data: data,id: id,status: 'd',payMethod: "card",address: address});
 
         const res2 = await axios.post("http://localhost:8000/clearCart", {myId: id});
 
